@@ -21,7 +21,7 @@ intervalo_t calculaIntervalo(double originalValue)
     intervalo.maior = nextafter(originalValue, INFINITY);
 
     fesetround(FE_DOWNWARD);
-    intervalo.menor = nextafter(originalValue, INFINITY);
+    intervalo.menor = nextafter(originalValue, -INFINITY);
 
     return intervalo;
 }
@@ -101,8 +101,6 @@ int main(int argc, char *argv[])
     float erro_absoluto;
     float erro_relativo;
     intervalo_t erro0 = calculaIntervalo(0);
-    printf("erro menor: %1.8e\n", erro0.menor);
-    printf("erro maior: %1.8e\n", erro0.maior);
 
     char valores_entrada[QNT_TERMOS][TAM_LINHA];
     for (i = 0; i < QNT_TERMOS; i++)
