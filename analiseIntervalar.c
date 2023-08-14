@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
             primeiro_valor = multiplicacao(primeiro_valor, segundo_valor);
             break;
         case '/':
-            if (((segundo_valor.maior > erro0.menor) && (segundo_valor.maior < erro0.maior)) && ((segundo_valor.menor > erro0.menor) && (segundo_valor.menor < erro0.maior)))
+            if (((segundo_valor.maior > erro0.menor) && (segundo_valor.maior < erro0.maior)) || ((segundo_valor.menor > erro0.menor) && (segundo_valor.menor < erro0.maior)))
             {
                 intervalo_t valor_auxiliar;
                 valor_auxiliar.menor = 1 / segundo_valor.maior;
