@@ -23,6 +23,8 @@ void comparaValor(intervalo_t *resultado, intervalo_t aux);
 
 intervalo_t multiplicacao(intervalo_t primeiro_valor, intervalo_t segundo_valor);
 
+intervalo_t divisao(intervalo_t primeiro_valor, intervalo_t segundo_valor);
+
 int ulps_between_floats(float a, float b);
 
 #endif
