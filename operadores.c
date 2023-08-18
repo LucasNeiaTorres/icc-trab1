@@ -72,19 +72,18 @@ intervalo_t multiplicacao(intervalo_t primeiro_valor, intervalo_t segundo_valor)
 
 intervalo_t divisao(intervalo_t primeiro_valor, intervalo_t segundo_valor)
 {
-    intervalo_t erro0 = calculaIntervalo(0);
-
-    if (((segundo_valor.maior > erro0.menor) && (segundo_valor.maior < erro0.maior)) || ((segundo_valor.menor > erro0.menor) && (segundo_valor.menor < erro0.maior)))
+    intervalo_t erro0 = calculaIntervalo(0); 
+    if (((segundo_valor.menor > erro0.menor) && (segundo_valor.menor < erro0.maior)) || ((segundo_valor.maior > erro0.menor) && (segundo_valor.maior < erro0.maior)))
+    {
+        primeiro_valor.maior = INFINITY;
+        primeiro_valor.menor = -INFINITY;
+    }
+    else
     {
         intervalo_t valor_auxiliar;
         valor_auxiliar.menor = 1 / segundo_valor.maior;
         valor_auxiliar.maior = 1 / segundo_valor.menor;
         primeiro_valor = multiplicacao(primeiro_valor, valor_auxiliar);
-    }
-    else
-    {
-        primeiro_valor.maior = INFINITY;
-        primeiro_valor.menor = -INFINITY;
     }
     return primeiro_valor;
 }
