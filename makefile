@@ -1,5 +1,5 @@
 parametrosCompilacao=-Wall -std=c99 -lm -D_DEFAULT_SOURCE #-Wshadow
-arquivos=analiseIntervalar.o operadores.o
+arquivos=analiseIntervalar.o operacoes.o
 all: analise
 
 analise: $(arquivos)
