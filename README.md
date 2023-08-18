@@ -1,6 +1,6 @@
 # EP-01 - Representação Numérica e Erros
 ## Leonardo Becker de Oliveira - GRR20211779
-## Lucas Néia Torres - GRR2021
+## Lucas Néia Torres - GRR20210570
 
 ### Limitações
 Claro, peço desculpas pela confusão. Aqui estão os casos em que o seu programa de aritmética intervalar poderia não funcionar corretamente:
