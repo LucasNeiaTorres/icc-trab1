@@ -1,7 +1,8 @@
 #ifndef _operadores_
 #define _operadores_
 
-#define QNT_TERMOS 10
+#define QNT_TERMOS 5
+#define QNT_LEITURAS QNT_TERMOS*2
 #define TAM_LINHA 1024
 #define ERRO 1
 
