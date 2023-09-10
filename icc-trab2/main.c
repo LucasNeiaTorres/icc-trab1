@@ -4,7 +4,7 @@
 
 #define N 2
 
-int encontraMax(double A[N][N], int i)
+int encontraMax(double **A, int i)
 {
     int max = i;
     for (int j = i + 1; j < N; j++)
@@ -17,7 +17,7 @@ int encontraMax(double A[N][N], int i)
     return max;
 }
 
-void trocaLinha(double A[N][N], double *b, int i, int iPivo)
+void trocaLinha(double **A, double *b, int i, int iPivo)
 {
     double aux;
     for (int j = 0; j < N; j++)
@@ -31,7 +31,7 @@ void trocaLinha(double A[N][N], double *b, int i, int iPivo)
     b[iPivo] = aux;
 }
 
-void eliminicaoGauss(double A[N][N], double *b)
+void eliminicaoGauss(double **A, double *b)
 {
     for (int i = 0; i < N; i++)
     {
@@ -53,7 +53,7 @@ void eliminicaoGauss(double A[N][N], double *b)
     }
 }
 
-void retroSubstituicao(double A[N][N], double *b)
+void retroSubstituicao(double **A, double *b)
 {
     for (int i = N - 1; i >= 0; i--)
     {
@@ -72,7 +72,7 @@ void retroSubstituicao(double A[N][N], double *b)
 //         Proceder com  a eliminação,  zerando a coluna  do pivô,  sem fazer pivoteamento.
 //         Completada   a  triangularização,   calcular  as   incógnitas  por retro-substituição.
 
-void eliminacaoGaussAlternativa(double A[N][N], double *b)
+void eliminacaoGaussAlternativa(double **A, double *b)
 {
     for (int i = 0; i < N; i++)
     {
@@ -95,7 +95,7 @@ void eliminacaoGaussAlternativa(double A[N][N], double *b)
     }
 }
 
-void imprimeMatriz(double A[N][N], double *b)
+void imprimeMatriz(double **A, double *b)
 {
     for (int i = 0; i < N; i++)
     {
@@ -118,7 +118,7 @@ void imprimeVetorResultado(double *b)
 }
 
 // As duas eliminações são iguais???????????
-void eliminacaoGaussSemMultiplicador(double A[N][N], double *b)
+void eliminacaoGaussSemMultiplicador(double **A, double *b)
 {
     for (int i = 0; i < N; i++)
     {
@@ -140,7 +140,7 @@ void eliminacaoGaussSemMultiplicador(double A[N][N], double *b)
     }
 }
 
-void copiaMatriz(double A[N][N], double B[N][N])
+void copiaMatriz(double **A, double **B)
 {
     for (int i = 0; i < N; i++)
     {
@@ -161,25 +161,45 @@ void copiaVetorResultado(double *b, double *bBackup)
 
 int main()
 {
-    double backup[N][N] = {
-        {0.004, 15.73},
-        {0.423, -24.72}};   
 
-    double backupResultado[N] = {15.77, -20.49};
+    int tamanho=0;
+    scanf("%d", &tamanho);
 
-    double vetorResultado[N];
-    double matrix[N][N];
+    double **matrizEntrada;
+    matrizEntrada=(double **)calloc(tamanho,sizeof(double*));
+    for(int i=0; i<tamanho; i++)
+        matrizEntrada[i]=(double *)calloc(tamanho,sizeof(double));
+    double *resultadoEntrada;
+    resultadoEntrada=(double *)calloc(tamanho,sizeof(double));
 
-    copiaMatriz(backup, matrix);
-    copiaVetorResultado(backupResultado, vetorResultado);
+    // Leitura da entrada
+    for(int i=0; i<tamanho; i++)
+        for(int j=0; j<(tamanho+1); j++)
+            if(j==tamanho)
+                scanf("%lf", &resultadoEntrada[i]);
+            else
+                scanf("%lf", &matrizEntrada[i][j]);
+    
+
+    double **matrix;
+        matrix=(double **)calloc(tamanho,sizeof(double*));
+    for(int i=0; i<tamanho; i++)
+        matrix[i]=(double *)calloc(tamanho,sizeof(double));
+
+    double *vetorResultado;
+    vetorResultado=(double *)calloc(tamanho,sizeof(double));
+
+
+    copiaMatriz(matrizEntrada, matrix);
+    copiaVetorResultado(resultadoEntrada, vetorResultado);
     eliminicaoGauss(matrix, vetorResultado);
     imprimeMatriz(matrix, vetorResultado);
     retroSubstituicao(matrix, vetorResultado);
     imprimeVetorResultado(vetorResultado);
     printf("\n\n");
 
-    copiaVetorResultado(backupResultado, vetorResultado);
-    copiaMatriz(backup, matrix);
+    copiaVetorResultado(resultadoEntrada, vetorResultado);
+    copiaMatriz(matrizEntrada, matrix);
     eliminacaoGaussAlternativa(matrix, vetorResultado);
     imprimeMatriz(matrix, vetorResultado);
     retroSubstituicao(matrix, vetorResultado);
