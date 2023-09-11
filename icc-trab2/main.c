@@ -247,12 +247,8 @@ int main()
         perror("Erro ao ler entrada");
         exit(EXIT_FAILURE);
     }
-    double **matrizEntrada;
-    matrizEntrada = (double **)calloc(ordem, sizeof(double *));
-    for (i = 0; i < ordem; i++)
-        matrizEntrada[i] = (double *)calloc(ordem, sizeof(double));
-    double *resultadoEntrada;
-    resultadoEntrada = (double *)calloc(ordem, sizeof(double));
+    double **matrizEntrada=alocaMatriz(ordem);
+    double *resultadoEntrada=alocaVetor(ordem);
 
     // Leitura da entrada
     for (i = 0; i < ordem; i++)
@@ -266,11 +262,8 @@ int main()
     eliminacaoGaussAlternativa(matrizEntrada, resultadoEntrada, ordem);
     eliminacaoGaussSemMultiplicador(matrizEntrada, resultadoEntrada, ordem);
 
-    for (i = 0; i < ordem; i++)
-        free(matrizEntrada[i]);
-    free(matrizEntrada);
-
-    free(resultadoEntrada);
-
+    desalocaMatriz(matrizEntrada, ordem);
+    desalocaVetor(resultadoEntrada);
+    
     return 0;
 }
