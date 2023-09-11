@@ -1,15 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "utils.h"
 #include <likwid.h>
-#include <sys/time.h>
-
-double getTimestamp(void)
-{
-    struct timeval tp;
-    gettimeofday(&tp, NULL);
-    return ((double)(tp.tv_sec + tp.tv_usec / 1000000.0));
-}
 
 void copiaMatriz(double **A, double **B, int ordem)
 {
@@ -113,6 +106,26 @@ void desalocaVetor(double *vetor)
     free(vetor);
 }
 
+double calculaResiduo(double **A, double *vetorSolucao, double *b, int ordem) {
+    double *residuo = (double *)malloc(ordem * sizeof(double));
+    double maxResiduo = 0.0;
+    
+    for (int i = 0; i < ordem; i++) {
+        residuo[i] = 0.0;
+        for (int j = 0; j < ordem; j++) {
+            residuo[i] += A[i][j] * vetorSolucao[j];
+        }
+        residuo[i] -= b[i];
+        residuo[i] = fabs(residuo[i]);
+        if (residuo[i] > maxResiduo) {
+            maxResiduo = residuo[i];
+        }
+    }
+    
+    free(residuo);
+    return maxResiduo;
+}
+
 void eliminacaoGauss(double **A, double *b, int ordem)
 {
 
@@ -121,7 +134,7 @@ void eliminacaoGauss(double **A, double *b, int ordem)
     copiaMatriz(A, matrizFuncao, ordem);
     copiaVetorResultado(b, resultadoFuncao, ordem);
 
-    double startTime = getTimestamp();
+    double startTime = timestamp();
     LIKWID_MARKER_START("EliminacaoGauss");
     int i, k, j;
     for (i = 0; i < ordem; i++)
@@ -141,10 +154,12 @@ void eliminacaoGauss(double **A, double *b, int ordem)
     }
     retroSubstituicao(matrizFuncao, resultadoFuncao, ordem);
     LIKWID_MARKER_STOP("EliminacaoGauss");
-    double endTime = getTimestamp();
+    double endTime = timestamp();
+    double residuo = calculaResiduo(A, resultadoFuncao, b, ordem);
 
     imprimeVetorResultado(resultadoFuncao, ordem);
-    printf("Tempo de execução: %lf\n\n", (endTime - startTime));
+    printf("Tempo de execução: %lf\n", (endTime - startTime));
+    printf("Residuo: %lf\n\n", residuo);
     desalocaMatriz(matrizFuncao, ordem);
     desalocaVetor(resultadoFuncao);
 }
@@ -156,7 +171,7 @@ void eliminacaoGaussSemMultiplicador(double **A, double *b, int ordem)
     copiaMatriz(A, matrizFuncao, ordem);
     copiaVetorResultado(b, resultadoFuncao, ordem);
 
-    double startTime = getTimestamp();
+    double startTime = timestamp();
     LIKWID_MARKER_START("EliminacaoGaussSemMultiplicador");
     for (int i = 0; i < ordem; i++)
     {
@@ -173,10 +188,12 @@ void eliminacaoGaussSemMultiplicador(double **A, double *b, int ordem)
 
     retroSubstituicao(matrizFuncao, resultadoFuncao, ordem);
     LIKWID_MARKER_STOP("EliminacaoGaussSemMultiplicador");
-    double endTime = getTimestamp();
+    double endTime = timestamp();
+    double residuo = calculaResiduo(A, resultadoFuncao, b, ordem);
 
     imprimeVetorResultado(resultadoFuncao, ordem);
-    printf("Tempo de execução: %lf\n\n", (endTime - startTime));
+    printf("Tempo de execução: %lf\n", (endTime - startTime));
+    printf("Residuo: %lf\n\n", residuo);
     desalocaMatriz(matrizFuncao, ordem);
     desalocaVetor(resultadoFuncao);
 }
@@ -188,7 +205,7 @@ void eliminacaoGaussAlternativa(double **A, double *b, int ordem)
     copiaMatriz(A, matrizFuncao, ordem);
     copiaVetorResultado(b, resultadoFuncao, ordem);
 
-    double startTime = getTimestamp();
+    double startTime = timestamp();
     LIKWID_MARKER_START("EliminacaoGaussAlternativa");
     for (int i = 0; i < ordem; i++)
     {
@@ -209,10 +226,12 @@ void eliminacaoGaussAlternativa(double **A, double *b, int ordem)
 
     retroSubstituicao(matrizFuncao, resultadoFuncao, ordem);
     LIKWID_MARKER_STOP("EliminacaoGaussAlternativa");
-    double endTime = getTimestamp();
+    double endTime = timestamp();
+    double residuo = calculaResiduo(A, resultadoFuncao, b, ordem);
 
     imprimeVetorResultado(resultadoFuncao, ordem);
-    printf("Tempo de execução: %lf\n\n", (endTime - startTime));
+    printf("Tempo de execução: %lf\n", (endTime - startTime));
+    printf("Residuo: %lf\n\n", residuo);
     desalocaMatriz(matrizFuncao, ordem);
     desalocaVetor(resultadoFuncao);
 }
