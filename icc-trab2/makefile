@@ -4,7 +4,7 @@
 # Compilador
     CC     = gcc
     CFLAGS = -O3 -mavx -march=native 
-    LFLAGS = -lm
+    LFLAGS = -lm -llikwid -I/home/lbo21/Faculdade/icc/icc-trab1/likwid-5.2.2/ -L/home/lbo21/Faculdade/icc/icc-trab1/likwid-5.2.2/
 
 # Lista de arquivos para distribuição
 DISTFILES = *.c *.h # LEIAME* Makefile
