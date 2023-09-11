@@ -2,25 +2,19 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 2
-
-int encontraMax(double **A, int i)
+int encontraMax(double **A, int i, int ordem)
 {
     int max = i;
-    for (int j = i + 1; j < N; j++)
-    {
+    for (int j = i + 1; j < ordem; j++)
         if (fabs(A[j][i]) > fabs(A[max][i]))
-        {
             max = j;
-        }
-    }
     return max;
 }
 
-void trocaLinha(double **A, double *b, int i, int iPivo)
+void trocaLinha(double **A, double *b, int i, int iPivo, int ordem)
 {
     double aux;
-    for (int j = 0; j < N; j++)
+    for (int j = 0; j < ordem; j++)
     {
         aux = A[i][j];
         A[i][j] = A[iPivo][j];
@@ -31,37 +25,33 @@ void trocaLinha(double **A, double *b, int i, int iPivo)
     b[iPivo] = aux;
 }
 
-void eliminicaoGauss(double **A, double *b)
+void eliminacaoGauss(double **A, double *b, int ordem)
 {
-    for (int i = 0; i < N; i++)
+    int i, k, j;
+    for (i = 0; i < ordem; i++)
     {
-        int iPivo = encontraMax(A, i);
+        int iPivo = encontraMax(A, i, ordem);
         if (iPivo != i)
-        {
-            trocaLinha(A, b, i, iPivo);
-        }
-        for (int k = i + 1; k < N; k++)
+            trocaLinha(A, b, i, iPivo, ordem);
+
+        for (k = i + 1; k < ordem; k++)
         {
             double m = A[k][i] / A[i][i];
             A[k][i] = 0.0;
-            for (int j = i + 1; j < N; j++)
-            {
+            for (j = i + 1; j < ordem; j++)
                 A[k][j] -= m * A[i][j];
-            }
             b[k] -= m * b[i];
         }
     }
 }
 
-void retroSubstituicao(double **A, double *b)
+void retroSubstituicao(double **A, double *b, int ordem)
 {
-    for (int i = N - 1; i >= 0; i--)
+    for (int i = ordem - 1; i >= 0; i--)
     {
         double soma = 0.0;
-        for (int j = i + 1; j < N; j++)
-        {
+        for (int j = i + 1; j < ordem; j++)
             soma += A[i][j] * b[j];
-        }
         b[i] = (b[i] - soma) / A[i][i];
     }
 }
@@ -72,35 +62,32 @@ void retroSubstituicao(double **A, double *b)
 //         Proceder com  a eliminação,  zerando a coluna  do pivô,  sem fazer pivoteamento.
 //         Completada   a  triangularização,   calcular  as   incógnitas  por retro-substituição.
 
-void eliminacaoGaussAlternativa(double **A, double *b)
+void eliminacaoGaussAlternativa(double **A, double *b, int ordem)
 {
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < ordem; i++)
     {
         double pivo = A[i][i];
-        for (int j = 0; j < N; j++)
-        {
+        for (int j = 0; j < ordem; j++)
             A[i][j] /= pivo;
-        }
         b[i] /= pivo;
-        for (int k = i + 1; k < N; k++)
+
+        for (int k = i + 1; k < ordem; k++)
         {
             double m = A[k][i];
             A[k][i] = 0.0;
-            for (int j = i + 1; j < N; j++)
-            {
+            for (int j = i + 1; j < ordem; j++)
                 A[k][j] -= m * A[i][j];
-            }
             b[k] -= m * b[i];
         }
     }
 }
 
-void imprimeMatriz(double **A, double *b)
+void imprimeMatriz(double **A, double *b, int ordem)
 {
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < ordem; i++)
     {
         printf("| ");
-        for (int j = 0; j < N; j++)
+        for (int j = 0; j < ordem; j++)
         {
             printf("%lf ", A[i][j]);
         }
@@ -108,9 +95,9 @@ void imprimeMatriz(double **A, double *b)
     }
 }
 
-void imprimeVetorResultado(double *b)
+void imprimeVetorResultado(double *b, int ordem)
 {
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < ordem; i++)
     {
         printf("| %lf |", b[i]);
     }
@@ -118,42 +105,36 @@ void imprimeVetorResultado(double *b)
 }
 
 // As duas eliminações são iguais???????????
-void eliminacaoGaussSemMultiplicador(double **A, double *b)
+void eliminacaoGaussSemMultiplicador(double **A, double *b, int ordem)
 {
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < ordem; i++)
     {
-        int iPivo = encontraMax(A, i);
+        int iPivo = encontraMax(A, i, ordem);
         if (iPivo != i)
+            trocaLinha(A, b, i, iPivo, ordem);
+        for (int k = i + 1; k < ordem; k++)
         {
-            trocaLinha(A, b, i, iPivo);
-        }
-        for (int k = i + 1; k < N; k++)
-        {
-            double m = A[k][i] / A[i][i];
-            A[k][i] = 0.0;
-            for (int j = i + 1; j < N; j++)
-            {
-                A[k][j] -= m * A[i][j];
-            }
-            b[k] -= m * b[i];
+            for (int j = i + 1; j < ordem; j++)
+                A[k][j] = (A[k][j] * A[i][i]) - (A[i][j] * A[k][i]);
+            b[k] = (b[k] * A[i][i]) - (b[i] * A[k][i]);
         }
     }
 }
 
-void copiaMatriz(double **A, double **B)
+void copiaMatriz(double **A, double **B, int ordem)
 {
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < ordem; i++)
     {
-        for (int j = 0; j < N; j++)
+        for (int j = 0; j < ordem; j++)
         {
             B[i][j] = A[i][j];
         }
     }
 }
 
-void copiaVetorResultado(double *b, double *bBackup)
+void copiaVetorResultado(double *b, double *bBackup, int ordem)
 {
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < ordem; i++)
     {
         bBackup[i] = b[i];
     }
@@ -162,48 +143,64 @@ void copiaVetorResultado(double *b, double *bBackup)
 int main()
 {
 
-    int tamanho=0;
-    scanf("%d", &tamanho);
-
+    int ordem, i, j;
+    double teste;
+    
+    if (scanf("%d", &ordem) != 1) {
+        perror("Erro ao ler entrada");
+        exit(EXIT_FAILURE);
+    }
     double **matrizEntrada;
-    matrizEntrada=(double **)calloc(tamanho,sizeof(double*));
-    for(int i=0; i<tamanho; i++)
-        matrizEntrada[i]=(double *)calloc(tamanho,sizeof(double));
+    matrizEntrada = (double **)calloc(ordem, sizeof(double*));
+    for(i=0; i<ordem; i++)
+        matrizEntrada[i] = (double *)calloc(ordem, sizeof(double));
     double *resultadoEntrada;
-    resultadoEntrada=(double *)calloc(tamanho,sizeof(double));
+    resultadoEntrada = (double *)calloc(ordem, sizeof(double));
 
     // Leitura da entrada
-    for(int i=0; i<tamanho; i++)
-        for(int j=0; j<(tamanho+1); j++)
-            if(j==tamanho)
-                scanf("%lf", &resultadoEntrada[i]);
+    for(i=0; i < ordem; i++)
+        for(j=0; j < (ordem+1); j++)
+            if(j == ordem)
+                teste = scanf("%lf", &resultadoEntrada[i]);
             else
-                scanf("%lf", &matrizEntrada[i][j]);
+                teste = scanf("%lf", &matrizEntrada[i][j]);
     
 
     double **matrix;
-        matrix=(double **)calloc(tamanho,sizeof(double*));
-    for(int i=0; i<tamanho; i++)
-        matrix[i]=(double *)calloc(tamanho,sizeof(double));
+        matrix = (double **)calloc(ordem, sizeof(double*));
+    for(int i=0; i<ordem; i++)
+        matrix[i] = (double *)calloc(ordem, sizeof(double));
 
     double *vetorResultado;
-    vetorResultado=(double *)calloc(tamanho,sizeof(double));
+    vetorResultado =(double *)calloc(ordem, sizeof(double));
 
 
-    copiaMatriz(matrizEntrada, matrix);
-    copiaVetorResultado(resultadoEntrada, vetorResultado);
-    eliminicaoGauss(matrix, vetorResultado);
-    imprimeMatriz(matrix, vetorResultado);
-    retroSubstituicao(matrix, vetorResultado);
-    imprimeVetorResultado(vetorResultado);
+    copiaMatriz(matrizEntrada, matrix, ordem);
+    copiaVetorResultado(resultadoEntrada, vetorResultado, ordem);
+    // eliminacaoGaussAlternativa(matrix, vetorResultado, ordem);
+    // eliminacaoGauss(matrix, vetorResultado, ordem);
+    eliminacaoGaussSemMultiplicador(matrix, vetorResultado, ordem);
+    imprimeMatriz(matrix, vetorResultado, ordem);
+    retroSubstituicao(matrix, vetorResultado, ordem);
+    // imprimeVetorResultado(vetorResultado, ordem);
     printf("\n\n");
 
-    copiaVetorResultado(resultadoEntrada, vetorResultado);
-    copiaMatriz(matrizEntrada, matrix);
-    eliminacaoGaussAlternativa(matrix, vetorResultado);
-    imprimeMatriz(matrix, vetorResultado);
-    retroSubstituicao(matrix, vetorResultado);
-    imprimeVetorResultado(vetorResultado);
+    // copiaVetorResultado(resultadoEntrada, vetorResultado, ordem);
+    // copiaMatriz(matrizEntrada, matrix, ordem);
+    // eliminacaoGaussAlternativa(matrix, vetorResultado, ordem);
+    // imprimeMatriz(matrix, vetorResultado, ordem);
+    // retroSubstituicao(matrix, vetorResultado, ordem);
+    imprimeVetorResultado(vetorResultado, ordem);
 
+    for (i=0; i < ordem; i++)
+        free(matrizEntrada[i]);
+    free(matrizEntrada);
+
+    for (i=0; i < ordem; i++)
+        free(matrix[i]);
+    free(matrix);
+
+    free(resultadoEntrada);
+    free(vetorResultado);
     return 0;
 }
