@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "utils.h"
-#include <likwid.h>
+#include "likwid.h"
 
 void copiaMatriz(double **A, double **B, int ordem)
 {
@@ -106,22 +106,26 @@ void desalocaVetor(double *vetor)
     free(vetor);
 }
 
-double calculaResiduo(double **A, double *vetorSolucao, double *b, int ordem) {
+double calculaResiduo(double **A, double *vetorSolucao, double *b, int ordem)
+{
     double *residuo = (double *)malloc(ordem * sizeof(double));
     double maxResiduo = 0.0;
-    
-    for (int i = 0; i < ordem; i++) {
+
+    for (int i = 0; i < ordem; i++)
+    {
         residuo[i] = 0.0;
-        for (int j = 0; j < ordem; j++) {
+        for (int j = 0; j < ordem; j++)
+        {
             residuo[i] += A[i][j] * vetorSolucao[j];
         }
         residuo[i] -= b[i];
         residuo[i] = fabs(residuo[i]);
-        if (residuo[i] > maxResiduo) {
+        if (residuo[i] > maxResiduo)
+        {
             maxResiduo = residuo[i];
         }
     }
-    
+
     free(residuo);
     return maxResiduo;
 }
@@ -135,6 +139,7 @@ void eliminacaoGauss(double **A, double *b, int ordem)
     copiaVetorResultado(b, resultadoFuncao, ordem);
 
     double startTime = timestamp();
+    printf("1. Eliminação Gauss\n");
     LIKWID_MARKER_START("EliminacaoGauss");
     int i, k, j;
     for (i = 0; i < ordem; i++)
@@ -172,6 +177,7 @@ void eliminacaoGaussSemMultiplicador(double **A, double *b, int ordem)
     copiaVetorResultado(b, resultadoFuncao, ordem);
 
     double startTime = timestamp();
+    printf("2. Eliminação Gauss sem multplicador\n");
     LIKWID_MARKER_START("EliminacaoGaussSemMultiplicador");
     for (int i = 0; i < ordem; i++)
     {
@@ -206,6 +212,7 @@ void eliminacaoGaussAlternativa(double **A, double *b, int ordem)
     copiaVetorResultado(b, resultadoFuncao, ordem);
 
     double startTime = timestamp();
+    printf("3. Eliminação Gauss Alternativa\n");
     LIKWID_MARKER_START("EliminacaoGaussAlternativa");
     for (int i = 0; i < ordem; i++)
     {
@@ -247,8 +254,8 @@ int main()
         perror("Erro ao ler entrada");
         exit(EXIT_FAILURE);
     }
-    double **matrizEntrada=alocaMatriz(ordem);
-    double *resultadoEntrada=alocaVetor(ordem);
+    double **matrizEntrada = alocaMatriz(ordem);
+    double *resultadoEntrada = alocaVetor(ordem);
 
     // Leitura da entrada
     for (i = 0; i < ordem; i++)
@@ -258,12 +265,13 @@ int main()
             else
                 teste = scanf("%lf", &matrizEntrada[i][j]);
 
+    LIKWID_MARKER_INIT;
     eliminacaoGauss(matrizEntrada, resultadoEntrada, ordem);
-    eliminacaoGaussAlternativa(matrizEntrada, resultadoEntrada, ordem);
     eliminacaoGaussSemMultiplicador(matrizEntrada, resultadoEntrada, ordem);
-
+    eliminacaoGaussAlternativa(matrizEntrada, resultadoEntrada, ordem);
+    LIKWID_MARKER_CLOSE;
     desalocaMatriz(matrizEntrada, ordem);
     desalocaVetor(resultadoEntrada);
-    
+
     return 0;
 }

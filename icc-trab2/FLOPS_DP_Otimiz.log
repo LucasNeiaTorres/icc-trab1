@@ -1,0 +1,168 @@
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz
+CPU type:	Intel Coffeelake processor
+CPU clock:	3.41 GHz
+--------------------------------------------------------------------------------
+1. Eliminação Gauss
+x1= -5.000000 
+x2= 35.000000 
+x3= 10.000000 
+x4= -20.000000 
+x5= 1.666667 
+x6= 35.000000 
+x7= -0.000000 
+x8= -20.000000 
+x9= 3.333333 
+x10= 30.000000 
+x11= -0.000000 
+x12= -0.000000 
+x13= -3.333333 
+x14= 30.000000 
+x15= 20.000000 
+x16= -6.666667 
+x17= 20.000000 
+Tempo de execução: 0.214349
+Residuo: 0.000000
+
+2. Eliminação Gauss sem multplicador
+x1= -nan 
+x2= -nan 
+x3= -nan 
+x4= -nan 
+x5= -nan 
+x6= -nan 
+x7= -nan 
+x8= -nan 
+x9= -nan 
+x10= -nan 
+x11= -nan 
+x12= -nan 
+x13= -nan 
+x14= -nan 
+x15= -nan 
+x16= -nan 
+x17= -nan 
+Tempo de execução: 0.205159
+Residuo: 0.000000
+
+3. Eliminação Gauss Alternativa
+x1= -nan 
+x2= -nan 
+x3= -nan 
+x4= -nan 
+x5= -nan 
+x6= -nan 
+x7= -nan 
+x8= -nan 
+x9= -nan 
+x10= -nan 
+x11= -nan 
+x12= -nan 
+x13= -nan 
+x14= -nan 
+x15= -nan 
+x16= -nan 
+x17= -nan 
+Tempo de execução: 0.198912
+Residuo: 0.000000
+
+--------------------------------------------------------------------------------
+Region EliminacaoGauss, Group 1: FLOPS_DP
++-------------------+----------+
+|    Region Info    |  Core 3  |
++-------------------+----------+
+| RDTSC Runtime [s] | 0.000003 |
+|     call count    |        1 |
++-------------------+----------+
+
++------------------------------------------+---------+--------+
+|                   Event                  | Counter | Core 3 |
++------------------------------------------+---------+--------+
+|             INSTR_RETIRED_ANY            |  FIXC0  |  18506 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  21831 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  19596 |
+| FP_ARITH_INST_RETIRED_128B_PACKED_DOUBLE |   PMC0  |   1492 |
+|    FP_ARITH_INST_RETIRED_SCALAR_DOUBLE   |   PMC1  |    732 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_DOUBLE |   PMC2  |      0 |
++------------------------------------------+---------+--------+
+
++----------------------+--------------+
+|        Metric        |    Core 3    |
++----------------------+--------------+
+|  Runtime (RDTSC) [s] | 2.680127e-06 |
+| Runtime unhalted [s] | 6.405822e-06 |
+|      Clock [MHz]     |    3796.6884 |
+|          CPI         |       1.1797 |
+|      DP MFLOP/s      |    1386.5015 |
+|    AVX DP MFLOP/s    |            0 |
+|    Packed MUOPS/s    |     556.6900 |
+|    Scalar MUOPS/s    |     273.1214 |
+|  Vectorization ratio |      67.0863 |
++----------------------+--------------+
+
+Region EliminacaoGaussSemMultiplicador, Group 1: FLOPS_DP
++-------------------+----------+
+|    Region Info    |  Core 3  |
++-------------------+----------+
+| RDTSC Runtime [s] | 0.000002 |
+|     call count    |        1 |
++-------------------+----------+
+
++------------------------------------------+---------+--------+
+|                   Event                  | Counter | Core 3 |
++------------------------------------------+---------+--------+
+|             INSTR_RETIRED_ANY            |  FIXC0  |  21029 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  18345 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  16614 |
+| FP_ARITH_INST_RETIRED_128B_PACKED_DOUBLE |   PMC0  |   1996 |
+|    FP_ARITH_INST_RETIRED_SCALAR_DOUBLE   |   PMC1  |   1220 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_DOUBLE |   PMC2  |      0 |
++------------------------------------------+---------+--------+
+
++----------------------+--------------+
+|        Metric        |    Core 3    |
++----------------------+--------------+
+|  Runtime (RDTSC) [s] | 2.252316e-06 |
+| Runtime unhalted [s] | 5.382933e-06 |
+|      Clock [MHz]     |    3763.0698 |
+|          CPI         |       0.8724 |
+|      DP MFLOP/s      |    2314.0625 |
+|    AVX DP MFLOP/s    |            0 |
+|    Packed MUOPS/s    |     886.1989 |
+|    Scalar MUOPS/s    |     541.6647 |
+|  Vectorization ratio |      62.0647 |
++----------------------+--------------+
+
+Region EliminacaoGaussAlternativa, Group 1: FLOPS_DP
++-------------------+----------+
+|    Region Info    |  Core 3  |
++-------------------+----------+
+| RDTSC Runtime [s] | 0.000002 |
+|     call count    |        1 |
++-------------------+----------+
+
++------------------------------------------+---------+--------+
+|                   Event                  | Counter | Core 3 |
++------------------------------------------+---------+--------+
+|             INSTR_RETIRED_ANY            |  FIXC0  |  15889 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  14796 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  13348 |
+| FP_ARITH_INST_RETIRED_128B_PACKED_DOUBLE |   PMC0  |   1628 |
+|    FP_ARITH_INST_RETIRED_SCALAR_DOUBLE   |   PMC1  |    630 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_DOUBLE |   PMC2  |      0 |
++------------------------------------------+---------+--------+
+
++----------------------+--------------+
+|        Metric        |    Core 3    |
++----------------------+--------------+
+|  Runtime (RDTSC) [s] | 1.638475e-06 |
+| Runtime unhalted [s] | 4.341558e-06 |
+|      Clock [MHz]     |    3777.6949 |
+|          CPI         |       0.9312 |
+|      DP MFLOP/s      |    2371.7176 |
+|    AVX DP MFLOP/s    |            0 |
+|    Packed MUOPS/s    |     993.6069 |
+|    Scalar MUOPS/s    |     384.5039 |
+|  Vectorization ratio |      72.0992 |
++----------------------+--------------+
+
