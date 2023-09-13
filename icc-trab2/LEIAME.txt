@@ -2,5 +2,8 @@ Nomes:
 Lucas Néia Torres - GRR20210570
 Leonardo Becker de Oliveira - GRR20211779
 
+Como rodar:
+Para rodar com o likwid digite ./teste.sh <nome-do-arquivo>.
+
 Limitações:
-O sistema 
+O programa apresenta poucas limitações, a única limitação encontrada é quando a entrada é uma matriz esparsa grande, onde retorna valores nan (menos na eliminação de Gauss tradicional). 
