@@ -31,7 +31,7 @@ int encontraMax(double **A, int i, int ordem)
 {
     int max = i;
     for (int j = i + 1; j < ordem; j++)
-        if (fabs(A[j][i]) > fabs(A[max][i]))
+        if (A[j][i] > A[max][i])
             max = j;
     return max;
 }

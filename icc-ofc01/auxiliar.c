@@ -37,7 +37,7 @@ void imprimeVetorResultado(double *b, int qntPontos)
 {
     for (int i = 0; i < qntPontos; i++)
     {
-        printf("x%d= %lf \n", (i + 1), b[i]);
+        printf("alpha%d= %lf \n", (i + 1), b[i]);
     }
 }
 

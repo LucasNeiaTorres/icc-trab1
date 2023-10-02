@@ -7,6 +7,7 @@
 # Compilador
     CC     = gcc
     CFLAGS = -O3 -mavx -march=native 
+	LFLAGS = -lm -D_DEFAULT_SOURCE
     # LFLAGS = -lm -I/home/soft/likwid/include -L/home/soft/likwid/lib -DLIKWID_PERFMON -llikwid
 
 # Lista de arquivos para distribuição
