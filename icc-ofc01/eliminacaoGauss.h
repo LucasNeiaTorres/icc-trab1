@@ -2,6 +2,7 @@
 #define __ELIMINACAO_GAUSS_H__
 #include "utils.h"
 #include "auxiliar.h"
+#include "operacoes.h"
 
 double calculaResiduo(double **A, double *vetorSolucao, double *b, int ordem);
 

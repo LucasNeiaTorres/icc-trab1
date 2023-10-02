@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "eliminacaoGauss.h"
 #include "operacoes.h"
+#include "gaussIntervalar.h"
 
 double potencia(double base, int expoente)
 {
@@ -14,41 +15,6 @@ double potencia(double base, int expoente)
         resultado *= base;
     }
     return resultado;
-}
-
-double *vetorResultado(double *x, double *fx, int qntPontos, int grauPolinomio)
-{
-    int i = 0;
-    int j = 0;
-    int ponto;
-    double *vetorResultado = alocaVetor(grauPolinomio);
-    double firstValue;
-    double secondValue;
-
-    for (i = 0; i < grauPolinomio; i++)
-    {
-        for (ponto = 0; ponto < qntPontos; ponto++)
-        {
-            vetorResultado[i] += fx[ponto] * potencia(x[ponto], i);
-        }
-    }
-    return vetorResultado;
-}
-
-intervalo_t **alocaMatrizIntervalo(int grauPolinomio)
-{
-    intervalo_t **matriz;
-    matriz = (intervalo_t **)calloc(grauPolinomio, sizeof(intervalo_t *));
-    for (int i = 0; i < grauPolinomio; i++)
-        matriz[i] = (intervalo_t *)calloc(grauPolinomio, sizeof(intervalo_t));
-    return matriz;
-}
-
-intervalo_t *alocaVetorIntervalo(int grauPolinomio)
-{
-    intervalo_t *vetor;
-    vetor = (intervalo_t *)calloc(grauPolinomio, sizeof(intervalo_t));
-    return vetor;
 }
 
 void imprimeMatrizIntervalo(intervalo_t **matriz, int grauPolinomio)
@@ -99,6 +65,25 @@ double **sistemaLinear(double *x, int qntPontos, int grauPolinomio)
     return matrizSL;
 }
 
+double *vetorResultado(double *x, double *fx, int qntPontos, int grauPolinomio)
+{
+    int i = 0;
+    int j = 0;
+    int ponto;
+    double *vetorResultado = alocaVetor(grauPolinomio);
+    double firstValue;
+    double secondValue;
+
+    for (i = 0; i < grauPolinomio; i++)
+    {
+        for (ponto = 0; ponto < qntPontos; ponto++)
+        {
+            vetorResultado[i] += fx[ponto] * potencia(x[ponto], i);
+        }
+    }
+    return vetorResultado;
+}
+
 intervalo_t **newSL(intervalo_t *xintervalo, int qntPontos, int grauPolinomio)
 {
     int i = 0;
@@ -107,7 +92,7 @@ intervalo_t **newSL(intervalo_t *xintervalo, int qntPontos, int grauPolinomio)
     intervalo_t primeiroValor;
     intervalo_t segundoValor;
     intervalo_t multIntervalar;
-    intervalo_t **matrizIntervalo = alocaMatrizIntervalo(grauPolinomio);
+    intervalo_t **matrizIntervalo = alocaMatrizIntervalar(grauPolinomio);
     for (i = 0; i < grauPolinomio; i++)
     {
         for (j = 0; j < grauPolinomio; j++)
@@ -123,6 +108,28 @@ intervalo_t **newSL(intervalo_t *xintervalo, int qntPontos, int grauPolinomio)
     }
     imprimeMatrizIntervalo(matrizIntervalo, grauPolinomio);
     return matrizIntervalo;
+}
+
+intervalo_t *vetorResultadoIntervalo(intervalo_t *xintervalo, intervalo_t *fxintervalo, int qntPontos, int grauPolinomio)
+{
+    int i = 0;
+    int j = 0;
+    int ponto;
+    intervalo_t *vetorResultado = alocaVetorIntervalar(grauPolinomio);
+    intervalo_t firstValue;
+    intervalo_t multIntervalar;
+
+    for (i = 0; i < grauPolinomio; i++)
+    {
+        for (ponto = 0; ponto < qntPontos; ponto++)
+        {
+            firstValue = potenciacao(xintervalo[ponto], i);
+            multIntervalar = multiplicacao(firstValue, fxintervalo[ponto]);
+            vetorResultado[i] = soma(vetorResultado[i], multIntervalar);
+        }
+    }
+    imprimeVetorIntervalo(vetorResultado, grauPolinomio);
+    return vetorResultado;
 }
 
 int main()
@@ -150,8 +157,8 @@ int main()
     double *x = alocaVetor(qntPontos);
     double *fx = alocaVetor(qntPontos);
 
-    intervalo_t *xintervalo = alocaVetorIntervalo(qntPontos);
-    intervalo_t *fxintervalo = alocaVetorIntervalo(qntPontos);
+    intervalo_t *xintervalo = alocaVetorIntervalar(qntPontos);
+    intervalo_t *fxintervalo = alocaVetorIntervalar(qntPontos);
 
     // Leitura da entrada
     for (i = 0; i < qntPontos; i++)
@@ -163,8 +170,9 @@ int main()
         fx[i] = entrada;
         fxintervalo[i] = calculaIntervalo(entrada);
     }
-    imprimeVetorIntervalo(xintervalo, qntPontos);
+
     intervalo_t **matrizIntervalo = newSL(xintervalo, qntPontos, grauPolinomio);
+    intervalo_t *vetorIntervalo = vetorResultadoIntervalo(xintervalo, fxintervalo, qntPontos, grauPolinomio);
 
     double **matriz = sistemaLinear(x, qntPontos, grauPolinomio);
     double *vetorRs = vetorResultado(x, fx, qntPontos, grauPolinomio);

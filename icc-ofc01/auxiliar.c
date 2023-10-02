@@ -13,11 +13,32 @@ void copiaMatriz(double **A, double **B, int qntPontos)
     }
 }
 
+void copiaMatrizIntervalar(intervalo_t **A, intervalo_t **B, int qntPontos)
+{
+    for (int i = 0; i < qntPontos; i++)
+    {
+        for (int j = 0; j < qntPontos; j++)
+        {
+            B[i][j].menor = A[i][j].menor;
+            B[i][j].maior = A[i][j].maior;
+        }
+    }
+}
+
 void copiaVetorResultado(double *b, double *bBackup, int qntPontos)
 {
     for (int i = 0; i < qntPontos; i++)
     {
         bBackup[i] = b[i];
+    }
+}
+
+void copiaVetorIntervalar(intervalo_t *b, intervalo_t *bBackup, int qntPontos)
+{
+    for (int i = 0; i < qntPontos; i++)
+    {
+        bBackup[i].menor = b[i].menor;
+        bBackup[i].maior = b[i].maior;
     }
 }
 
@@ -39,6 +60,22 @@ void imprimeVetorResultado(double *b, int qntPontos)
     {
         printf("alpha%d= %lf \n", (i + 1), b[i]);
     }
+}
+
+intervalo_t **alocaMatrizIntervalar(int grauPolinomio)
+{
+    intervalo_t **matriz;
+    matriz = (intervalo_t **)calloc(grauPolinomio, sizeof(intervalo_t *));
+    for (int i = 0; i < grauPolinomio; i++)
+        matriz[i] = (intervalo_t *)calloc(grauPolinomio, sizeof(intervalo_t));
+    return matriz;
+}
+
+intervalo_t *alocaVetorIntervalar(int grauPolinomio)
+{
+    intervalo_t *vetor;
+    vetor = (intervalo_t *)calloc(grauPolinomio, sizeof(intervalo_t));
+    return vetor;
 }
 
 double **alocaMatriz(int qntPontos)
