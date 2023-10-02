@@ -62,6 +62,27 @@ void imprimeVetorResultado(double *b, int qntPontos)
     }
 }
 
+void imprimeMatrizIntervalar(intervalo_t **matriz, int grauPolinomio)
+{
+    for (int i = 0; i < grauPolinomio; i++)
+    {
+        for (int j = 0; j < grauPolinomio; j++)
+        {
+            printf("[%lf, %lf] ", matriz[i][j].menor, matriz[i][j].maior);
+        }
+        printf("\n");
+    }
+}
+
+void imprimeVetorIntervalar(intervalo_t *vetor, int grauPolinomio)
+{
+    for (int i = 0; i < grauPolinomio; i++)
+    {
+        printf("[%lf, %lf] ", vetor[i].menor, vetor[i].maior);
+    }
+    printf("\n");
+}
+
 intervalo_t **alocaMatrizIntervalar(int grauPolinomio)
 {
     intervalo_t **matriz;

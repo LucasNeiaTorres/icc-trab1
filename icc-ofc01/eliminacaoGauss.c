@@ -86,6 +86,8 @@ void eliminacaoGauss(double **A, double *b, int ordem)
             resultadoFuncao[k] -= m * resultadoFuncao[i];
         }
     }
+    printf("\n\n\n==============>\n");
+    imprimeMatriz(matrizFuncao, ordem);
     retroSubstituicao(matrizFuncao, resultadoFuncao, ordem);
     rtime_t endTime = timestamp();
     double residuo = calculaResiduo(A, resultadoFuncao, b, ordem);

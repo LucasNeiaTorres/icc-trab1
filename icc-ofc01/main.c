@@ -17,27 +17,6 @@ double potencia(double base, int expoente)
     return resultado;
 }
 
-void imprimeMatrizIntervalo(intervalo_t **matriz, int grauPolinomio)
-{
-    for (int i = 0; i < grauPolinomio; i++)
-    {
-        for (int j = 0; j < grauPolinomio; j++)
-        {
-            printf("[%lf, %lf] ", matriz[i][j].menor, matriz[i][j].maior);
-        }
-        printf("\n");
-    }
-}
-
-void imprimeVetorIntervalo(intervalo_t *vetor, int grauPolinomio)
-{
-    for (int i = 0; i < grauPolinomio; i++)
-    {
-        printf("[%lf, %lf] ", vetor[i].menor, vetor[i].maior);
-    }
-    printf("\n");
-}
-
 double **sistemaLinear(double *x, int qntPontos, int grauPolinomio)
 {
     int i = 0;
@@ -106,7 +85,7 @@ intervalo_t **newSL(intervalo_t *xintervalo, int qntPontos, int grauPolinomio)
             }
         }
     }
-    imprimeMatrizIntervalo(matrizIntervalo, grauPolinomio);
+    imprimeMatrizIntervalar(matrizIntervalo, grauPolinomio);
     return matrizIntervalo;
 }
 
@@ -128,7 +107,7 @@ intervalo_t *vetorResultadoIntervalo(intervalo_t *xintervalo, intervalo_t *fxint
             vetorResultado[i] = soma(vetorResultado[i], multIntervalar);
         }
     }
-    imprimeVetorIntervalo(vetorResultado, grauPolinomio);
+    imprimeVetorIntervalar(vetorResultado, grauPolinomio);
     return vetorResultado;
 }
 
@@ -173,6 +152,8 @@ int main()
 
     intervalo_t **matrizIntervalo = newSL(xintervalo, qntPontos, grauPolinomio);
     intervalo_t *vetorIntervalo = vetorResultadoIntervalo(xintervalo, fxintervalo, qntPontos, grauPolinomio);
+
+    eliminacaoGaussIntervalar(matrizIntervalo, vetorIntervalo, grauPolinomio);
 
     double **matriz = sistemaLinear(x, qntPontos, grauPolinomio);
     double *vetorRs = vetorResultado(x, fx, qntPontos, grauPolinomio);
