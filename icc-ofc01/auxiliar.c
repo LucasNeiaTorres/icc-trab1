@@ -68,7 +68,7 @@ void imprimeMatrizIntervalar(intervalo_t **matriz, int grauPolinomio)
     {
         for (int j = 0; j < grauPolinomio; j++)
         {
-            printf("[%lf, %lf] ", matriz[i][j].menor, matriz[i][j].maior);
+            printf("[%25lf, %25lf] ", matriz[i][j].menor, matriz[i][j].maior);
         }
         printf("\n");
     }
@@ -78,7 +78,7 @@ void imprimeVetorIntervalar(intervalo_t *vetor, int grauPolinomio)
 {
     for (int i = 0; i < grauPolinomio; i++)
     {
-        printf("[%lf, %lf] ", vetor[i].menor, vetor[i].maior);
+        printf("aplha%d=[%lf, %lf]\n", i, vetor[i].menor, vetor[i].maior);
     }
     printf("\n");
 }
@@ -97,6 +97,18 @@ intervalo_t *alocaVetorIntervalar(int grauPolinomio)
     intervalo_t *vetor;
     vetor = (intervalo_t *)calloc(grauPolinomio, sizeof(intervalo_t));
     return vetor;
+}
+
+void desalocaMatrizIntervalar(intervalo_t **matriz, int grauPolinomio)
+{
+    for (int i = 0; i < grauPolinomio; i++)
+        free(matriz[i]);
+    free(matriz);
+}
+
+void desalocaVetorIntervalar(intervalo_t *vetor)
+{
+    free(vetor);
 }
 
 double **alocaMatriz(int qntPontos)

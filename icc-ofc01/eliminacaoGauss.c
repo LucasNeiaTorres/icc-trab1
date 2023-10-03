@@ -69,7 +69,6 @@ void eliminacaoGauss(double **A, double *b, int ordem)
     copiaVetorResultado(b, resultadoFuncao, ordem);
 
     rtime_t startTime = timestamp();
-    printf("1. Eliminação Gauss\n");
     int i, k, j;
     for (i = 0; i < ordem; i++)
     {

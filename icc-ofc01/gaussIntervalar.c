@@ -4,26 +4,31 @@
 #include "gaussIntervalar.h"
 
 // Arrumar residuo intervalar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-double calculaResiduoIntervalar(intervalo_t **A, intervalo_t *vetorSolucao, intervalo_t *b, int ordem)
+intervalo_t calculaResiduoIntervalar(intervalo_t **A, intervalo_t *vetorSolucao, intervalo_t *b, int ordem)
 {
-    double *residuo = (double *)malloc(ordem * sizeof(double));
-    double maxResiduo = 0.0;
+    intervalo_t *residuo = (intervalo_t *)malloc(ordem * sizeof(intervalo_t));
+    intervalo_t maxResiduo;
+    maxResiduo.maior = 0.0;
+    maxResiduo.menor = 0.0;
 
     for (int i = 0; i < ordem; i++)
     {
-        residuo[i] = 0.0;
+        residuo[i].maior = 0.0;
+        residuo[i].menor = 0.0;
+
         for (int j = 0; j < ordem; j++)
         {
-            residuo[i] += A[i][j] * vetorSolucao[j];
+            residuo[i] = soma(residuo[i], multiplicacao(A[i][j], vetorSolucao[j]));
         }
-        residuo[i] -= b[i];
-        residuo[i] = fabs(residuo[i]);
-        if (residuo[i] > maxResiduo)
+        residuo[i] = subtracao(residuo[i], b[i]);
+        residuo[i].maior = fabs(residuo[i].maior);
+        residuo[i].menor = fabs(residuo[i].menor);
+        if (residuo[i].maior > maxResiduo.maior)
         {
-            maxResiduo = residuo[i];
+            maxResiduo.maior = residuo[i].maior;
+            maxResiduo.menor = residuo[i].menor;
         }
     }
-
     free(residuo);
     return maxResiduo;
 }
@@ -95,14 +100,10 @@ void eliminacaoGaussIntervalar(intervalo_t **A, intervalo_t *b, int ordem)
     imprimeMatrizIntervalar(matrizIntevalar, ordem);
     imprimeVetorIntervalar(resultadoIntervalar, ordem);
     rtime_t endTime = timestamp();
+    intervalo_t residuo = calculaResiduoIntervalar(A, resultadoIntervalar, b, ordem);
+    printf("Tempo de execução: %lf\n", (endTime - startTime));
+    printf("Residuo: [%lf,%lf]\n\n", residuo.menor, residuo.maior);
     printf("\n\n====================\n");
-    // retroSubstituicao(matrizFuncao, resultadoFuncao, ordem);
-    // rtime_t endTime = timestamp();
-    // double residuo = calculaResiduo(A, resultadoFuncao, b, ordem);
-
-    // imprimeVetorResultado(resultadoFuncao, ordem);
-    // printf("Tempo de execução: %lf\n", (endTime - startTime));
-    // printf("Residuo: %lf\n\n", residuo);
-    // desalocaMatriz(matrizFuncao, ordem);
-    // desalocaVetor(resultadoFuncao);
+    desalocaMatrizIntervalar(matrizIntevalar, ordem);
+    desalocaVetorIntervalar(resultadoIntervalar);
 }

@@ -26,6 +26,10 @@ intervalo_t **alocaMatrizIntervalar(int grauPolinomio);
 
 intervalo_t *alocaVetorIntervalar(int grauPolinomio);
 
+void desalocaMatrizIntervalar(intervalo_t **matriz, int grauPolinomio);
+
+void desalocaVetorIntervalar(intervalo_t *vetor);
+
 void imprimeMatrizIntervalar(intervalo_t **matriz, int grauPolinomio);
 
 void imprimeVetorIntervalar(intervalo_t *vetor, int grauPolinomio);

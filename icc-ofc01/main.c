@@ -150,15 +150,14 @@ int main()
         fxintervalo[i] = calculaIntervalo(entrada);
     }
 
+    printf("GAUSS INTERVALAR\n");
     intervalo_t **matrizIntervalo = newSL(xintervalo, qntPontos, grauPolinomio);
     intervalo_t *vetorIntervalo = vetorResultadoIntervalo(xintervalo, fxintervalo, qntPontos, grauPolinomio);
-
     eliminacaoGaussIntervalar(matrizIntervalo, vetorIntervalo, grauPolinomio);
 
+    printf("GAUSS\n");
     double **matriz = sistemaLinear(x, qntPontos, grauPolinomio);
     double *vetorRs = vetorResultado(x, fx, qntPontos, grauPolinomio);
-    imprimeMatriz(matriz, grauPolinomio);
-    imprimeVetorResultado(vetorRs, grauPolinomio);
     eliminacaoGauss(matriz, vetorRs, grauPolinomio);
 
     desalocaMatriz(matriz, grauPolinomio);
