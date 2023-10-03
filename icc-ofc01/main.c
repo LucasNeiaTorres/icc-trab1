@@ -6,6 +6,7 @@
 #include "eliminacaoGauss.h"
 #include "operacoes.h"
 #include "gaussIntervalar.h"
+#include "likwid.h"
 
 double potencia(double base, int expoente)
 {
@@ -151,17 +152,23 @@ int main()
     }
 
     printf("GAUSS INTERVALAR\n");
+    LIKWID_MARKER_INIT;
+
+    LIKWID_MARKER_START("EliminacaoGaussIntervalar");
     intervalo_t **matrizIntervalo = newSL(xintervalo, qntPontos, grauPolinomio);
     intervalo_t *vetorIntervalo = vetorResultadoIntervalo(xintervalo, fxintervalo, qntPontos, grauPolinomio);
     eliminacaoGaussIntervalar(matrizIntervalo, vetorIntervalo, grauPolinomio);
+    LIKWID_MARKER_STOP("EliminacaoGaussIntervalar");
 
-    printf("GAUSS\n");
-    double **matriz = sistemaLinear(x, qntPontos, grauPolinomio);
-    double *vetorRs = vetorResultado(x, fx, qntPontos, grauPolinomio);
-    eliminacaoGauss(matriz, vetorRs, grauPolinomio);
 
-    desalocaMatriz(matriz, grauPolinomio);
-    desalocaVetor(vetorRs);
-    desalocaVetor(x);
-    desalocaVetor(fx);
+    // printf("GAUSS\n");
+    // double **matriz = sistemaLinear(x, qntPontos, grauPolinomio);
+    // double *vetorRs = vetorResultado(x, fx, qntPontos, grauPolinomio);
+    // eliminacaoGauss(matriz, vetorRs, grauPolinomio);
+
+    LIKWID_MARKER_CLOSE;
+    // desalocaMatriz(matriz, grauPolinomio);
+    // desalocaVetor(vetorRs);
+    // desalocaVetor(x);
+    // desalocaVetor(fx);
 }

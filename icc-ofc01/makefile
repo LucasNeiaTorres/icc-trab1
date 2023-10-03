@@ -1,14 +1,13 @@
 # PROGRAMA
     PROG = ajustePol
 
-	# LIKWID_INCLUDE = /home/soft/likwid/include
-	# LIKWID_INCLUDE = /home/soft/likwid/lib
+	LIKWID_INCLUDE = /home/soft/likwid/include
+	LIKWID_INCLUDE = /home/soft/likwid/lib
 
 # Compilador
     CC     = gcc
     CFLAGS = -O3 -mavx -march=native 
-	LFLAGS = -lm -D_DEFAULT_SOURCE
-    # LFLAGS = -lm -I/home/soft/likwid/include -L/home/soft/likwid/lib -DLIKWID_PERFMON -llikwid
+    LFLAGS = -lm -I/home/soft/likwid/include -L/home/soft/likwid/lib -DLIKWID_PERFMON -llikwid
 
 # Lista de arquivos para distribuição
 DISTFILES = *.c *.h # LEIAME* Makefile
