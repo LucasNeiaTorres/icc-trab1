@@ -33,6 +33,18 @@ intervalo_t calculaResiduoIntervalar(intervalo_t **A, intervalo_t *vetorSolucao,
     return maxResiduo;
 }
 
+intervalo_t calculaResiduoIntervalar(intervalo_t *xintervalo, intervalo_t *fxintervalo, intervalo_t *vetorSolucao, int ordem) {
+    intervalo_t *residuo = (intervalo_t *)calloc(ordem * sizeof(intervalo_t));
+    int i, j;
+    for(i = 0; i < ordem; i++) {
+        for(j = 0; j < ordem; j++) {
+            residuo[i] = soma(multiplicacao(potenciacao(xintervalo[i], j), vetorSolucao[j]), residuo[i]);
+        }
+    }
+    free(residuo);
+}
+
+
 int encontraMaxIntervalar(intervalo_t **A, int i, int ordem)
 {
     int max = i;

@@ -1,7 +1,7 @@
 #!/bin/bash                                                                                                                                                                                                                                   
 
 ARQUIVO_ENTRADA="$1"
-METRICA="FLOPS_DP FLOPS_AVX ENERGY"
+METRICA="FLOPS_DP ENERGY"
 CPU=3
 
 LIKWID_HOME=/home/soft/likwid
@@ -13,14 +13,5 @@ echo "performance" > /sys/devices/system/cpu/cpufreq/policy3/scaling_governor
 make
 for k in $METRICA
 do
-    likwid-perfctr -C ${CPU} -g ${k} -m ./ajustePol < ${ARQUIVO_ENTRADA} > ${k}_SemOtimiz.log
+    likwid-perfctr -C ${CPU} -g ${k} -m ./ajustePol < ${ARQUIVO_ENTRADA} | grep '  DP MFLOP/s\| AVX DP MFLOP/s\| Energy \[J\]' 
 done
-
-rm -f ajustePol
-make
-for k in $METRICA
-do
-    likwid-perfctr -C ${CPU} -g ${k} -m ./ajustePol < ${ARQUIVO_ENTRADA} > ${k}_Otimiz.log
-done
-
-echo "powersave" > /sys/devices/system/cpu/cpufreq/policy3/scaling_governor
