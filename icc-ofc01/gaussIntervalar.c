@@ -4,44 +4,46 @@
 #include "gaussIntervalar.h"
 
 // Arrumar residuo intervalar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-intervalo_t calculaResiduoIntervalar(intervalo_t **A, intervalo_t *vetorSolucao, intervalo_t *b, int ordem)
-{
-    intervalo_t *residuo = (intervalo_t *)malloc(ordem * sizeof(intervalo_t));
-    intervalo_t maxResiduo;
-    maxResiduo.maior = 0.0;
-    maxResiduo.menor = 0.0;
+// intervalo_t calculaResiduoIntervalar(intervalo_t **A, intervalo_t *vetorSolucao, intervalo_t *b, int ordem)
+// {
+//     intervalo_t *residuo = (intervalo_t *)malloc(ordem * sizeof(intervalo_t));
+//     intervalo_t maxResiduo;
+//     maxResiduo.maior = 0.0;
+//     maxResiduo.menor = 0.0;
 
-    for (int i = 0; i < ordem; i++)
-    {
-        residuo[i].maior = 0.0;
-        residuo[i].menor = 0.0;
+//     for (int i = 0; i < ordem; i++)
+//     {
+//         residuo[i].maior = 0.0;
+//         residuo[i].menor = 0.0;
 
-        for (int j = 0; j < ordem; j++)
-        {
-            residuo[i] = soma(residuo[i], multiplicacao(A[i][j], vetorSolucao[j]));
-        }
-        residuo[i] = subtracao(residuo[i], b[i]);
-        residuo[i].maior = fabs(residuo[i].maior);
-        residuo[i].menor = fabs(residuo[i].menor);
-        if (residuo[i].maior > maxResiduo.maior)
-        {
-            maxResiduo.maior = residuo[i].maior;
-            maxResiduo.menor = residuo[i].menor;
-        }
-    }
-    free(residuo);
-    return maxResiduo;
-}
+//         for (int j = 0; j < ordem; j++)
+//         {
+//             residuo[i] = soma(residuo[i], multiplicacao(A[i][j], vetorSolucao[j]));
+//         }
+//         residuo[i] = subtracao(residuo[i], b[i]);
+//         residuo[i].maior = fabs(residuo[i].maior);
+//         residuo[i].menor = fabs(residuo[i].menor);
+//         if (residuo[i].maior > maxResiduo.maior)
+//         {
+//             maxResiduo.maior = residuo[i].maior;
+//             maxResiduo.menor = residuo[i].menor;
+//         }
+//     }
+//     free(residuo);
+//     return maxResiduo;
+// }
 
-intervalo_t calculaResiduoIntervalar(intervalo_t *xintervalo, intervalo_t *fxintervalo, intervalo_t *vetorSolucao, int ordem) {
-    intervalo_t *residuo = (intervalo_t *)calloc(ordem * sizeof(intervalo_t));
+intervalo_t* calculaResiduoIntervalar(intervalo_t *xintervalo, intervalo_t *fxintervalo, intervalo_t *vetorSolucao, int grauPolinomio, int qntPontos) {
+    intervalo_t *residuo = (intervalo_t *)calloc(qntPontos, sizeof(intervalo_t));
     int i, j;
-    for(i = 0; i < ordem; i++) {
-        for(j = 0; j < ordem; j++) {
+    for(i = 0; i < qntPontos; i++) {
+        for(j = 0; j < grauPolinomio; j++) {
             residuo[i] = soma(multiplicacao(potenciacao(xintervalo[i], j), vetorSolucao[j]), residuo[i]);
         }
+        residuo[i] = subtracao(residuo[i], fxintervalo[i]);
     }
-    free(residuo);
+
+    return residuo;
 }
 
 

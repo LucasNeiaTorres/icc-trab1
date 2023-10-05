@@ -158,7 +158,10 @@ int main()
     intervalo_t **matrizIntervalo = newSL(xintervalo, qntPontos, grauPolinomio);
     intervalo_t *vetorIntervalo = vetorResultadoIntervalo(xintervalo, fxintervalo, qntPontos, grauPolinomio);
     eliminacaoGaussIntervalar(matrizIntervalo, vetorIntervalo, grauPolinomio);
+    intervalo_t *residuo = calculaResiduoIntervalar(xintervalo, fxintervalo, vetorIntervalo, grauPolinomio, qntPontos) {
     LIKWID_MARKER_STOP("EliminacaoGaussIntervalar");
+
+    imprimeVetorIntervalar(residuo, grauPolinomio);
 
 
     // printf("GAUSS\n");
@@ -167,6 +170,7 @@ int main()
     // eliminacaoGauss(matriz, vetorRs, grauPolinomio);
 
     LIKWID_MARKER_CLOSE;
+    free(residuo);
     // desalocaMatriz(matriz, grauPolinomio);
     // desalocaVetor(vetorRs);
     // desalocaVetor(x);
