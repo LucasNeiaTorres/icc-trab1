@@ -7,7 +7,7 @@
 #include "operacoes.h"
 #include "gaussIntervalar.h"
 #include "minimoQuadrado.h"
-// #include "likwid.h"
+#include "likwid.h"
 
 int main()
 {
@@ -46,8 +46,8 @@ int main()
         fxintervalo[i] = calculaIntervalo(entrada);
     }
 
-    // LIKWID_MARKER_INIT;
-    // LIKWID_MARKER_START("EliminacaoGaussIntervalar");
+    LIKWID_MARKER_INIT;
+    LIKWID_MARKER_START("EliminacaoGaussIntervalar");
 
     startTime = timestamp();
     intervalo_t **matrizIntervalo = sistemaLinearIntervalar(xintervalo, qntPontos, grauPolinomio);
@@ -58,13 +58,13 @@ int main()
     intervalo_t *residuo = calculaResiduoIntervalar(xintervalo, fxintervalo, coeficientes, grauPolinomio, qntPontos);
     solTime = timestamp() - startTime;
 
-    // LIKWID_MARKER_STOP("EliminacaoGaussIntervalar");
-    // LIKWID_MARKER_CLOSE;
+    LIKWID_MARKER_STOP("EliminacaoGaussIntervalar");
+    LIKWID_MARKER_CLOSE;
 
     imprimeVetorIntervalar(coeficientes, grauPolinomio);
     imprimeVetorIntervalar(residuo, qntPontos);
-    printf("TgeraSL: %lf\n", solTime);
-    printf("TsolSL: %lf\n", geraTime);
+    printf("%lf\n", solTime);
+    printf("%lf\n", geraTime);
 
     desalocaVetorIntervalar(xintervalo);
     desalocaVetorIntervalar(fxintervalo);

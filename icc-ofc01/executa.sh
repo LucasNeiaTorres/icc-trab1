@@ -10,8 +10,19 @@ LFLAGS="-L${LIKWID_HOME}/lib -llikwid"
 
 echo "performance" > /sys/devices/system/cpu/cpufreq/policy3/scaling_governor
 
+make purge
 make
+
+
+if [ -e "aux.txt" ]; then
+    rm aux.txt
+fi
+
 for k in $METRICA
 do
-    likwid-perfctr -C ${CPU} -g ${k} -m ./ajustePol < ${ARQUIVO_ENTRADA} | grep '  DP MFLOP/s\| AVX DP MFLOP/s\| Energy \[J\]' 
+    likwid-perfctr -C ${CPU} -g ${k} -m ./ajustePol < ${ARQUIVO_ENTRADA} >> aux.txt
 done
+
+cat aux.txt | sed -n '6,9p'
+cat aux.txt | grep '  DP MFLOP/s\| AVX DP MFLOP/s\| Energy \[J\]'
+rm aux.txt
