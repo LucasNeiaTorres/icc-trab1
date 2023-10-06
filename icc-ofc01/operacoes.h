@@ -1,5 +1,5 @@
-#ifndef _operadores_
-#define _operadores_
+#ifndef __OPERACOES_H__
+#define __OPERACOES_H__
 
 #define QNT_TERMOS 5
 #define QNT_LEITURAS QNT_TERMOS * 2

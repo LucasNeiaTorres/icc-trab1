@@ -3,36 +3,6 @@
 #include <math.h>
 #include "gaussIntervalar.h"
 
-// Arrumar residuo intervalar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// intervalo_t calculaResiduoIntervalar(intervalo_t **A, intervalo_t *vetorSolucao, intervalo_t *b, int ordem)
-// {
-//     intervalo_t *residuo = (intervalo_t *)malloc(ordem * sizeof(intervalo_t));
-//     intervalo_t maxResiduo;
-//     maxResiduo.maior = 0.0;
-//     maxResiduo.menor = 0.0;
-
-//     for (int i = 0; i < ordem; i++)
-//     {
-//         residuo[i].maior = 0.0;
-//         residuo[i].menor = 0.0;
-
-//         for (int j = 0; j < ordem; j++)
-//         {
-//             residuo[i] = soma(residuo[i], multiplicacao(A[i][j], vetorSolucao[j]));
-//         }
-//         residuo[i] = subtracao(residuo[i], b[i]);
-//         residuo[i].maior = fabs(residuo[i].maior);
-//         residuo[i].menor = fabs(residuo[i].menor);
-//         if (residuo[i].maior > maxResiduo.maior)
-//         {
-//             maxResiduo.maior = residuo[i].maior;
-//             maxResiduo.menor = residuo[i].menor;
-//         }
-//     }
-//     free(residuo);
-//     return maxResiduo;
-// }
-
 intervalo_t *calculaResiduoIntervalar(intervalo_t *xintervalo, intervalo_t *fxintervalo, intervalo_t *coeficientes, int grauPolinomio, int qntPontos)
 {
     intervalo_t *residuo = (intervalo_t *)calloc(qntPontos, sizeof(intervalo_t));
@@ -45,7 +15,6 @@ intervalo_t *calculaResiduoIntervalar(intervalo_t *xintervalo, intervalo_t *fxin
         }
         residuo[i] = subtracao(residuo[i], fxintervalo[i]);
     }
-
     return residuo;
 }
 
@@ -87,13 +56,10 @@ void retroSubstituicaoIntervalar(intervalo_t **A, intervalo_t *b, int ordem)
 
 intervalo_t *eliminacaoGaussIntervalar(intervalo_t **A, intervalo_t *b, int ordem)
 {
-    printf("\n\n====================>\n");
     intervalo_t **matrizIntevalar = alocaMatrizIntervalar(ordem);
     intervalo_t *resultadoIntervalar = alocaVetorIntervalar(ordem);
     copiaMatrizIntervalar(A, matrizIntevalar, ordem);
     copiaVetorIntervalar(b, resultadoIntervalar, ordem);
-
-    rtime_t startTime = timestamp();
     int i, k, j;
     for (i = 0; i < ordem; i++)
     {
@@ -113,12 +79,8 @@ intervalo_t *eliminacaoGaussIntervalar(intervalo_t **A, intervalo_t *b, int orde
         }
     }
     retroSubstituicaoIntervalar(matrizIntevalar, resultadoIntervalar, ordem);
-    imprimeMatrizIntervalar(matrizIntevalar, ordem);
-    imprimeVetorIntervalar(resultadoIntervalar, ordem);
-    rtime_t endTime = timestamp();
-    printf("Tempo de execução: %lf\n", (endTime - startTime));
-    printf("\n\n====================\n");
-
+    // imprimeMatrizIntervalar(matrizIntevalar, ordem);
+    // imprimeVetorIntervalar(resultadoIntervalar, ordem);
     desalocaMatrizIntervalar(matrizIntevalar, ordem);
     return resultadoIntervalar;
 }

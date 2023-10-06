@@ -6,111 +6,8 @@
 #include "eliminacaoGauss.h"
 #include "operacoes.h"
 #include "gaussIntervalar.h"
+#include "minimoQuadrado.h"
 // #include "likwid.h"
-
-double potencia(double base, int expoente)
-{
-    double resultado = 1;
-    for (int i = 0; i < expoente; i++)
-    {
-        resultado *= base;
-    }
-    return resultado;
-}
-
-double **sistemaLinear(double *x, int qntPontos, int grauPolinomio)
-{
-    int i = 0;
-    int j = 0;
-    int k = 0;
-    int ponto;
-    double **matrizSL = alocaMatriz(grauPolinomio);
-    double firstValue;
-    double secondValue;
-
-    for (i = 0; i < grauPolinomio; i++)
-    {
-        for (j = 0; j < grauPolinomio; j++)
-        {
-            for (ponto = 0; ponto < qntPontos; ponto++)
-            {
-
-                firstValue = potencia(x[ponto], i);
-                secondValue = potencia(x[ponto], j);
-                matrizSL[i][j] += firstValue * secondValue;
-            }
-        }
-    }
-    imprimeMatriz(matrizSL, grauPolinomio);
-    return matrizSL;
-}
-
-double *vetorResultado(double *x, double *fx, int qntPontos, int grauPolinomio)
-{
-    int i = 0;
-    int j = 0;
-    int ponto;
-    double *vetorResultado = alocaVetor(grauPolinomio);
-    double firstValue;
-    double secondValue;
-
-    for (i = 0; i < grauPolinomio; i++)
-    {
-        for (ponto = 0; ponto < qntPontos; ponto++)
-        {
-            vetorResultado[i] += fx[ponto] * potencia(x[ponto], i);
-        }
-    }
-    return vetorResultado;
-}
-
-intervalo_t **newSL(intervalo_t *xintervalo, int qntPontos, int grauPolinomio)
-{
-    int i = 0;
-    int j = 0;
-    int ponto = 0;
-    intervalo_t primeiroValor;
-    intervalo_t segundoValor;
-    intervalo_t multIntervalar;
-    intervalo_t **matrizIntervalo = alocaMatrizIntervalar(grauPolinomio);
-    for (i = 0; i < grauPolinomio; i++)
-    {
-        for (j = 0; j < grauPolinomio; j++)
-        {
-            for (ponto = 0; ponto < qntPontos; ponto++)
-            {
-                primeiroValor = potenciacao(xintervalo[ponto], i);
-                segundoValor = potenciacao(xintervalo[ponto], j);
-                multIntervalar = multiplicacao(primeiroValor, segundoValor);
-                matrizIntervalo[i][j] = soma(matrizIntervalo[i][j], multIntervalar);
-            }
-        }
-    }
-    imprimeMatrizIntervalar(matrizIntervalo, grauPolinomio);
-    return matrizIntervalo;
-}
-
-intervalo_t *vetorResultadoIntervalo(intervalo_t *xintervalo, intervalo_t *fxintervalo, int qntPontos, int grauPolinomio)
-{
-    int i = 0;
-    int j = 0;
-    int ponto;
-    intervalo_t *vetorResultado = alocaVetorIntervalar(grauPolinomio);
-    intervalo_t firstValue;
-    intervalo_t multIntervalar;
-
-    for (i = 0; i < grauPolinomio; i++)
-    {
-        for (ponto = 0; ponto < qntPontos; ponto++)
-        {
-            firstValue = potenciacao(xintervalo[ponto], i);
-            multIntervalar = multiplicacao(firstValue, fxintervalo[ponto]);
-            vetorResultado[i] = soma(vetorResultado[i], multIntervalar);
-        }
-    }
-    imprimeVetorIntervalar(vetorResultado, grauPolinomio);
-    return vetorResultado;
-}
 
 int main()
 {
@@ -120,6 +17,9 @@ int main()
     int grauPolinomio;
     char aux;
     double entrada;
+    rtime_t startTime;
+    rtime_t geraTime;
+    rtime_t solTime;
 
     if (scanf("%d", &grauPolinomio) != 1)
     {
@@ -146,20 +46,25 @@ int main()
         fxintervalo[i] = calculaIntervalo(entrada);
     }
 
-    printf("GAUSS INTERVALAR\n");
     // LIKWID_MARKER_INIT;
-
     // LIKWID_MARKER_START("EliminacaoGaussIntervalar");
-    intervalo_t **matrizIntervalo = newSL(xintervalo, qntPontos, grauPolinomio);
-    intervalo_t *vetorIntervalo = vetorResultadoIntervalo(xintervalo, fxintervalo, qntPontos, grauPolinomio);
+
+    startTime = timestamp();
+    intervalo_t **matrizIntervalo = sistemaLinearIntervalar(xintervalo, qntPontos, grauPolinomio);
+    intervalo_t *vetorIntervalo = vetorResultadoIntervalar(xintervalo, fxintervalo, qntPontos, grauPolinomio);
+    geraTime = timestamp() - startTime;
+    startTime = timestamp();
     intervalo_t *coeficientes = eliminacaoGaussIntervalar(matrizIntervalo, vetorIntervalo, grauPolinomio);
     intervalo_t *residuo = calculaResiduoIntervalar(xintervalo, fxintervalo, coeficientes, grauPolinomio, qntPontos);
+    solTime = timestamp() - startTime;
+
     // LIKWID_MARKER_STOP("EliminacaoGaussIntervalar");
-
-    printf("Residuo: \n");
-    imprimeVetorIntervalar(residuo, qntPontos);
-
     // LIKWID_MARKER_CLOSE;
+
+    imprimeVetorIntervalar(coeficientes, grauPolinomio);
+    imprimeVetorIntervalar(residuo, qntPontos);
+    printf("TgeraSL: %lf\n", solTime);
+    printf("TsolSL: %lf\n", geraTime);
 
     desalocaVetorIntervalar(xintervalo);
     desalocaVetorIntervalar(fxintervalo);
