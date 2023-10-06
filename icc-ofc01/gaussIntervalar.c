@@ -9,11 +9,10 @@ intervalo_t *calculaResiduoIntervalar(intervalo_t *xintervalo, intervalo_t *fxin
     int i, j;
     for (i = 0; i < qntPontos; i++)
     {
+
         for (j = 0; j < grauPolinomio; j++)
-        {
             residuo[i] = soma(multiplicacao(potenciacao(xintervalo[i], j), coeficientes[j]), residuo[i]);
-        }
-        residuo[i] = subtracao(residuo[i], fxintervalo[i]);
+        residuo[i] = subtracao(fxintervalo[i], residuo[i]);
     }
     return residuo;
 }

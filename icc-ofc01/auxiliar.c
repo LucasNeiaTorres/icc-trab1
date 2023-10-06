@@ -48,7 +48,7 @@ void imprimeMatriz(double **A, int qntPontos)
     {
         for (int j = 0; j < qntPontos; j++)
         {
-            printf("%lf ", A[i][j]);
+            printf("%1.8e ", A[i][j]);
         }
         printf("\n");
     }
@@ -68,7 +68,7 @@ void imprimeMatrizIntervalar(intervalo_t **matriz, int grauPolinomio)
     {
         for (int j = 0; j < grauPolinomio; j++)
         {
-            printf("[%25lf, %25lf] ", matriz[i][j].menor, matriz[i][j].maior);
+            printf("[%1.8e, %1.8e] ", matriz[i][j].menor, matriz[i][j].maior);
         }
         printf("\n");
     }
@@ -78,7 +78,7 @@ void imprimeVetorIntervalar(intervalo_t *vetor, int grauPolinomio)
 {
     for (int i = 0; i < grauPolinomio; i++)
     {
-        printf("[%lf, %lf] ", vetor[i].menor, vetor[i].maior);
+        printf("[%1.8e, %1.8e] ", vetor[i].menor, vetor[i].maior);
     }
     printf("\n");
 }

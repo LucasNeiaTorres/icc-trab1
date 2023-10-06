@@ -3,7 +3,6 @@
 #include <math.h>
 #include "auxiliar.h"
 #include "utils.h"
-#include "eliminacaoGauss.h"
 #include "operacoes.h"
 #include "gaussIntervalar.h"
 #include "minimoQuadrado.h"
@@ -26,6 +25,7 @@ int main()
         perror("Erro ao ler entrada");
         exit(EXIT_FAILURE);
     }
+    grauPolinomio++;
 
     // Leitura da quantidade de pontos
     if (scanf("%d", &qntPontos) != 1)
@@ -63,8 +63,8 @@ int main()
 
     imprimeVetorIntervalar(coeficientes, grauPolinomio);
     imprimeVetorIntervalar(residuo, qntPontos);
-    printf("%lf\n", solTime);
-    printf("%lf\n", geraTime);
+    printf("%1.8e\n", solTime);
+    printf("%1.8e\n", geraTime);
 
     desalocaVetorIntervalar(xintervalo);
     desalocaVetorIntervalar(fxintervalo);
