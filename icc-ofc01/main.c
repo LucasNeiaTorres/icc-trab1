@@ -134,9 +134,6 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    double *x = alocaVetor(qntPontos);
-    double *fx = alocaVetor(qntPontos);
-
     intervalo_t *xintervalo = alocaVetorIntervalar(qntPontos);
     intervalo_t *fxintervalo = alocaVetorIntervalar(qntPontos);
 
@@ -144,10 +141,8 @@ int main()
     for (i = 0; i < qntPontos; i++)
     {
         aux = scanf("%lf", &entrada);
-        x[i] = entrada;
         xintervalo[i] = calculaIntervalo(entrada);
         aux = scanf("%lf", &entrada);
-        fx[i] = entrada;
         fxintervalo[i] = calculaIntervalo(entrada);
     }
 
@@ -157,23 +152,19 @@ int main()
     // LIKWID_MARKER_START("EliminacaoGaussIntervalar");
     intervalo_t **matrizIntervalo = newSL(xintervalo, qntPontos, grauPolinomio);
     intervalo_t *vetorIntervalo = vetorResultadoIntervalo(xintervalo, fxintervalo, qntPontos, grauPolinomio);
-    eliminacaoGaussIntervalar(matrizIntervalo, vetorIntervalo, grauPolinomio);
-    intervalo_t *residuo = calculaResiduoIntervalar(xintervalo, fxintervalo, vetorIntervalo, grauPolinomio, qntPontos);
+    intervalo_t *coeficientes = eliminacaoGaussIntervalar(matrizIntervalo, vetorIntervalo, grauPolinomio);
+    intervalo_t *residuo = calculaResiduoIntervalar(xintervalo, fxintervalo, coeficientes, grauPolinomio, qntPontos);
     // LIKWID_MARKER_STOP("EliminacaoGaussIntervalar");
 
     printf("Residuo: \n");
     imprimeVetorIntervalar(residuo, qntPontos);
 
-
-    // printf("GAUSS\n");
-    // double **matriz = sistemaLinear(x, qntPontos, grauPolinomio);
-    // double *vetorRs = vetorResultado(x, fx, qntPontos, grauPolinomio);
-    // eliminacaoGauss(matriz, vetorRs, grauPolinomio);
-
     // LIKWID_MARKER_CLOSE;
-    free(residuo);
-    // desalocaMatriz(matriz, grauPolinomio);
-    // desalocaVetor(vetorRs);
-    // desalocaVetor(x);
-    // desalocaVetor(fx);
+
+    desalocaVetorIntervalar(xintervalo);
+    desalocaVetorIntervalar(fxintervalo);
+    desalocaVetorIntervalar(vetorIntervalo);
+    desalocaVetorIntervalar(coeficientes);
+    desalocaVetorIntervalar(residuo);
+    desalocaMatrizIntervalar(matrizIntervalo, grauPolinomio);
 }

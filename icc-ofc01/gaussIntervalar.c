@@ -33,19 +33,21 @@
 //     return maxResiduo;
 // }
 
-intervalo_t* calculaResiduoIntervalar(intervalo_t *xintervalo, intervalo_t *fxintervalo, intervalo_t *vetorSolucao, int grauPolinomio, int qntPontos) {
+intervalo_t *calculaResiduoIntervalar(intervalo_t *xintervalo, intervalo_t *fxintervalo, intervalo_t *coeficientes, int grauPolinomio, int qntPontos)
+{
     intervalo_t *residuo = (intervalo_t *)calloc(qntPontos, sizeof(intervalo_t));
     int i, j;
-    for(i = 0; i < qntPontos; i++) {
-        for(j = 0; j < grauPolinomio; j++) {
-            residuo[i] = soma(multiplicacao(potenciacao(xintervalo[i], j), vetorSolucao[j]), residuo[i]);
+    for (i = 0; i < qntPontos; i++)
+    {
+        for (j = 0; j < grauPolinomio; j++)
+        {
+            residuo[i] = soma(multiplicacao(potenciacao(xintervalo[i], j), coeficientes[j]), residuo[i]);
         }
         residuo[i] = subtracao(residuo[i], fxintervalo[i]);
     }
 
     return residuo;
 }
-
 
 int encontraMaxIntervalar(intervalo_t **A, int i, int ordem)
 {
@@ -83,7 +85,7 @@ void retroSubstituicaoIntervalar(intervalo_t **A, intervalo_t *b, int ordem)
     }
 }
 
-void eliminacaoGaussIntervalar(intervalo_t **A, intervalo_t *b, int ordem)
+intervalo_t *eliminacaoGaussIntervalar(intervalo_t **A, intervalo_t *b, int ordem)
 {
     printf("\n\n====================>\n");
     intervalo_t **matrizIntevalar = alocaMatrizIntervalar(ordem);
@@ -116,6 +118,7 @@ void eliminacaoGaussIntervalar(intervalo_t **A, intervalo_t *b, int ordem)
     rtime_t endTime = timestamp();
     printf("Tempo de execução: %lf\n", (endTime - startTime));
     printf("\n\n====================\n");
+
     desalocaMatrizIntervalar(matrizIntevalar, ordem);
-    desalocaVetorIntervalar(resultadoIntervalar);
+    return resultadoIntervalar;
 }
