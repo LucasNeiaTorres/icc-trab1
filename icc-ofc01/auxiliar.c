@@ -78,7 +78,7 @@ void imprimeVetorIntervalar(intervalo_t *vetor, int grauPolinomio)
 {
     for (int i = 0; i < grauPolinomio; i++)
     {
-        printf("aplha%d=[%lf, %lf]\n", i, vetor[i].menor, vetor[i].maior);
+        printf("alpha%d=[%lf, %lf]\n", i, vetor[i].menor, vetor[i].maior);
     }
     printf("\n");
 }

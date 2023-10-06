@@ -114,9 +114,7 @@ void eliminacaoGaussIntervalar(intervalo_t **A, intervalo_t *b, int ordem)
     imprimeMatrizIntervalar(matrizIntevalar, ordem);
     imprimeVetorIntervalar(resultadoIntervalar, ordem);
     rtime_t endTime = timestamp();
-    intervalo_t residuo = calculaResiduoIntervalar(A, resultadoIntervalar, b, ordem);
     printf("Tempo de execução: %lf\n", (endTime - startTime));
-    printf("Residuo: [%lf,%lf]\n\n", residuo.menor, residuo.maior);
     printf("\n\n====================\n");
     desalocaMatrizIntervalar(matrizIntevalar, ordem);
     desalocaVetorIntervalar(resultadoIntervalar);
