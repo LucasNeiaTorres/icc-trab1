@@ -1,3 +1,7 @@
+/* Autores:
+    Lucas Néia Torres - GRR20210570
+    Leonardo Becker de Oliveira - GRR20211779
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

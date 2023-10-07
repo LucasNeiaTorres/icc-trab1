@@ -1,7 +1,12 @@
+/* Autores:
+    Lucas Néia Torres - GRR20210570
+    Leonardo Becker de Oliveira - GRR20211779
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "auxiliar.h"
 
+// atribui valores da matriz A para a matriz B
 void copiaMatriz(double **A, double **B, int qntPontos)
 {
     for (int i = 0; i < qntPontos; i++)
@@ -13,6 +18,7 @@ void copiaMatriz(double **A, double **B, int qntPontos)
     }
 }
 
+// atribui valores da matriz A para a matriz B, sendo A e B matrizes com valores intervalares
 void copiaMatrizIntervalar(intervalo_t **A, intervalo_t **B, int qntPontos)
 {
     for (int i = 0; i < qntPontos; i++)
@@ -25,6 +31,7 @@ void copiaMatrizIntervalar(intervalo_t **A, intervalo_t **B, int qntPontos)
     }
 }
 
+// atribui valores do vetor b para bBackup
 void copiaVetorResultado(double *b, double *bBackup, int qntPontos)
 {
     for (int i = 0; i < qntPontos; i++)
@@ -33,6 +40,7 @@ void copiaVetorResultado(double *b, double *bBackup, int qntPontos)
     }
 }
 
+// atribui valores do vetor b para bBackup, sendo A e B vetores com valores intervalares
 void copiaVetorIntervalar(intervalo_t *b, intervalo_t *bBackup, int qntPontos)
 {
     for (int i = 0; i < qntPontos; i++)
@@ -83,6 +91,7 @@ void imprimeVetorIntervalar(intervalo_t *vetor, int grauPolinomio)
     printf("\n");
 }
 
+// aloca dinamicamente matriz intervalar de tamanho qntPontos x qntPontos
 intervalo_t **alocaMatrizIntervalar(int grauPolinomio)
 {
     intervalo_t **matriz;
@@ -92,6 +101,7 @@ intervalo_t **alocaMatrizIntervalar(int grauPolinomio)
     return matriz;
 }
 
+// aloca dinamicamente vetor intervalar de tamanho qntPontos 
 intervalo_t *alocaVetorIntervalar(int grauPolinomio)
 {
     intervalo_t *vetor;
@@ -99,6 +109,7 @@ intervalo_t *alocaVetorIntervalar(int grauPolinomio)
     return vetor;
 }
 
+// desaloca dinamicamente matriz intervalar de tamanho qntPontos x qntPontos
 void desalocaMatrizIntervalar(intervalo_t **matriz, int grauPolinomio)
 {
     for (int i = 0; i < grauPolinomio; i++)
@@ -106,11 +117,13 @@ void desalocaMatrizIntervalar(intervalo_t **matriz, int grauPolinomio)
     free(matriz);
 }
 
+// desaloca dinamicamente vetor intervalar de tamanho qntPontos 
 void desalocaVetorIntervalar(intervalo_t *vetor)
 {
     free(vetor);
 }
 
+// aloca dinamicamente matriz de tamanho qntPontos x qntPontos
 double **alocaMatriz(int qntPontos)
 {
     double **matriz;
@@ -120,6 +133,7 @@ double **alocaMatriz(int qntPontos)
     return matriz;
 }
 
+// aloca dinamicamente vetor de tamanho qntPontos 
 double *alocaVetor(int qntPontos)
 {
     double *vetor;
@@ -127,6 +141,7 @@ double *alocaVetor(int qntPontos)
     return vetor;
 }
 
+// desaloca dinamicamente matriz de tamanho qntPontos x qntPontos
 void desalocaMatriz(double **matriz, int qntPontos)
 {
     for (int i = 0; i < qntPontos; i++)
@@ -134,6 +149,7 @@ void desalocaMatriz(double **matriz, int qntPontos)
     free(matriz);
 }
 
+// desaloca dinamicamente vetor de tamanho qntPontos 
 void desalocaVetor(double *vetor)
 {
     free(vetor);

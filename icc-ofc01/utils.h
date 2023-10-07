@@ -1,3 +1,7 @@
+/* Autores:
+    Lucas Néia Torres - GRR20210570
+    Leonardo Becker de Oliveira - GRR20211779
+*/
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
