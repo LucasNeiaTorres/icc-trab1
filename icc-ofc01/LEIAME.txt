@@ -1,0 +1,11 @@
+Nomes: 
+Lucas Néia Torres - GRR20210570
+Leonardo Becker de Oliveira - GRR20211779
+
+Como rodar:
+Para rodar com o likwid digite ./executa.sh <nome-do-arquivo-entrada>.
+Para rodar sem as métricas do likwid dê make e digite ./ajustePol < <nome-do-arquivo-entrada> > <nome-do-arquivo-saída>.
+
+Limitações:
+As possíveis limitações apresentadas pelo programa se dão justamente pelo limite de representação da máquina, em que valores exponencias extremos, ou valores específicos (valores reservados e denormalizados), apresentam resultados como Infinity (overflow e underflow) e NaN.
+Além disso, o Método dos Mínimos Quadrados, que envolve a Eliminação de Gauss com pivoteamento parcial, pode ser computacionalmente intensivo, especialmente para sistemas de grande ordem. O uso de aritmética intervalar pode aumentar ainda mais a complexidade computacional devido às operações adicionais envolvidas.
