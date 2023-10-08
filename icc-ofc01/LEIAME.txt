@@ -3,7 +3,7 @@ Lucas Néia Torres - GRR20210570
 Leonardo Becker de Oliveira - GRR20211779
 
 Como rodar:
-Para rodar com o likwid digite ./executa.sh <nome-do-arquivo-entrada>.
+Para rodar com o likwid digite ./executa.sh <nome-do-arquivo-entrada> > <nome-do-arquivo-saída>.
 Para rodar sem as métricas do likwid dê make e digite ./ajustePol < <nome-do-arquivo-entrada> > <nome-do-arquivo-saída>.
 
 Limitações:
