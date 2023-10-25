@@ -7,7 +7,7 @@
 #define BASE 32
 
 #define UF 4 // Valor de fator de unroll
-#define BK 8 // Valor de fator de blocking
+#define BK 4 // Valor de fator de blocking
 
 #define ABS(num)  ((num) < 0.0 ? -(num) : (num))
 

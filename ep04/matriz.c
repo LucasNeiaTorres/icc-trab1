@@ -122,28 +122,26 @@ void multMatVet(MatRow mat, Vetor v, int m, int n, Vetor res)
 void multMatVetUnrollJamBlocking(MatRow mat, Vetor v, int m, int n, Vetor res)
 {
   if (res)
-  {
-    int istart = 0;
-    int iend = 0;
-    int jstart = 0;
-    int jend = 0;
+    return;
 
-    for (int ii = 0; ii < m/BK; ++ii){
-      istart = ii * BK;
-      iend = istart + BK;
+  int istart = 0;
+  int iend = 0;
+  int jstart = 0;
+  int jend = 0;
 
-      for (int jj = 0; jj < n/BK; ++jj) {
-        jstart = jj * BK;
-        jend = jstart + BK;
-
-        for (int i = istart; i < iend; i += UF)
-          for (int j = jstart; j < jend; ++j) {
-            res[i] += mat[n * i + j] * v[j];
-            res[i+1] += mat[n * (i+1) + j] * v[j];
-            res[i+2] += mat[n * (i+2) + j] * v[j];
-            res[i+3] += mat[n * (i+3) + j] * v[j];
-          }
-      }
+  for (int ii = 0; ii < m/BK; ++ii){
+    istart = ii * BK;
+    iend = istart + BK;
+    for (int jj = 0; jj < n/BK; ++jj) {
+      jstart = jj * BK;
+      jend = jstart + BK;
+      for (int i = istart; i < iend; i += UF)
+        for (int j = jstart; j < jend; ++j) {
+          res[i] += mat[n * i + j] * v[j];
+          res[i+1] += mat[n * (i+1) + j] * v[j];
+          res[i+2] += mat[n * (i+2) + j] * v[j];
+          res[i+3] += mat[n * (i+3) + j] * v[j];
+        }
     }
   }
 }
@@ -160,7 +158,6 @@ void multMatVetUnrollJamBlocking(MatRow mat, Vetor v, int m, int n, Vetor res)
 
 void multMatMat(MatRow A, MatRow B, int n, MatRow C)
 {
-
   /* Efetua a multiplicação */
   for (int i = 0; i < n; ++i)
     for (int j = 0; j < n; ++j)
@@ -169,7 +166,38 @@ void multMatMat(MatRow A, MatRow B, int n, MatRow C)
 }
 
 void multMatMatUnrollJamBlocking(MatRow A, MatRow B, int n, MatRow C){
-
+  int istart = 0;
+  int iend = 0;
+  int jstart = 0;
+  int jend = 0;
+  int kstart = 0;
+  int kend = 0;
+  
+  for (int ii = 0; ii < n/BK; ++ii) {
+    istart = ii * BK; 
+    iend = istart + BK;
+    for (int jj = 0; jj < n/BK; ++jj) {
+      jstart = jj * BK; 
+      jend = jstart + BK;
+      for (int kk = 0; kk < n/BK; ++kk) {
+        kstart = kk * BK;
+        kend = kstart + BK;
+        for (int i = istart; i < iend; ++i)
+          for (int j = jstart; j < jend; j += UF) {
+            memset(C, 0, n * n * sizeof(real_t));
+            for (int k = kstart; k < kend; ++k) {
+            // C[i][j] = C[i * n + j]
+            // A[i][k] = A[i * n + k]
+            // B[k][j] = B[k * n + j]
+              C[i * n + j] += A[i * n + k] * B[k * n + j];
+              C[i * n + (j+1)] += A[i * n + k] * B[k * n + (j+1)];
+              C[i * n + (j+2)] += A[i * n + k] * B[k * n + (j+2)];
+              C[i * n + (j+3)] += A[i * n + k] * B[k * n + (j+3)];
+            }
+          }
+      }
+    }
+  }
 }
 
 /**
