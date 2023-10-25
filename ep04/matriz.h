@@ -7,7 +7,7 @@
 #define BASE 32
 
 #define UF 4 // Valor de fator de unroll
-#define BK 16 // Valor de fator de blocking
+#define BK 8 // Valor de fator de blocking
 
 #define ABS(num)  ((num) < 0.0 ? -(num) : (num))
 
@@ -26,7 +26,10 @@ Vetor geraVetor (int n, int zerar);
 void liberaVetor (void *vet);
 
 void multMatVet (MatRow mat, Vetor v, int m, int n, Vetor res);
+void multMatVetUnrollJamBlocking(MatRow mat, Vetor v, int m, int n, Vetor res);
+
 void multMatMat(MatRow A, MatRow B, int n, MatRow C);
+void multMatMatUnrollJamBlocking(MatRow A, MatRow B, int n, MatRow C);
 
 void prnMat (MatRow mat, int m, int n);
 void prnVetor (Vetor vet, int n);

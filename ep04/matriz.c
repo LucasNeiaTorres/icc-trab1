@@ -118,6 +118,36 @@ void multMatVet(MatRow mat, Vetor v, int m, int n, Vetor res)
   }
 }
 
+ 
+void multMatVetUnrollJamBlocking(MatRow mat, Vetor v, int m, int n, Vetor res)
+{
+  if (res)
+  {
+    int istart = 0;
+    int iend = 0;
+    int jstart = 0;
+    int jend = 0;
+
+    for (int ii = 0; ii < m/BK; ++ii){
+      istart = ii * BK;
+      iend = istart + BK;
+
+      for (int jj = 0; jj < n/BK; ++jj) {
+        jstart = jj * BK;
+        jend = jstart + BK;
+
+        for (int i = istart; i < iend; i += UF)
+          for (int j = jstart; j < jend; ++j) {
+            res[i] += mat[n * i + j] * v[j];
+            res[i+1] += mat[n * (i+1) + j] * v[j];
+            res[i+2] += mat[n * (i+2) + j] * v[j];
+            res[i+3] += mat[n * (i+3) + j] * v[j];
+          }
+      }
+    }
+  }
+}
+
 /**
  *  Funcao multMatMat: Efetua multiplicacao de duas matrizes 'n x n'
  *  @param A matriz 'n x n'
@@ -136,6 +166,10 @@ void multMatMat(MatRow A, MatRow B, int n, MatRow C)
     for (int j = 0; j < n; ++j)
       for (int k = 0; k < n; ++k)
         C[i * n + j] += A[i * n + k] * B[k * n + j];
+}
+
+void multMatMatUnrollJamBlocking(MatRow A, MatRow B, int n, MatRow C){
+
 }
 
 /**

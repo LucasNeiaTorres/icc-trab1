@@ -82,6 +82,17 @@ int main(int argc, char *argv[])
   prnMat(resMat, n, n);
 #endif /* _DEBUG_ */
 
+  printf("\n===========================Resultado sem Unroll e Jam + Blocking============================\n");
+  prnVetor(res, n);
+  prnMat(resMat, n, n);
+
+  memset(res, 0, n * sizeof(real_t));
+  memset(resMat, 0, n * n * sizeof(real_t));
+
+  multMatVetUnrollJamBlocking(mRow_1, vet, n, n, res);
+  multMatMatUnrollJamBlocking(mRow_1, mRow_2, n, resMat);
+
+  printf("\n===========================Resultado com Unroll e Jam + Blocking============================\n");
   prnVetor(res, n);
   prnMat(resMat, n, n);
 
