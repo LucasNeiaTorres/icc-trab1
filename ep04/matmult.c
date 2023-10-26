@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include "matriz.h"
+#include "utils.h"
 
 /**
  * Exibe mensagem de erro indicando forma de uso do programa e termina
@@ -68,33 +69,45 @@ int main(int argc, char *argv[])
   printf("=================================\n\n");
 #endif /* _DEBUG_ */
 
-  prnMat(mRow_1, n, n);
-  prnMat(mRow_2, n, n);
-  prnVetor(vet, n);
-  printf("=================================\n\n");
+  // prnMat(mRow_1, n, n);
+  // prnMat(mRow_2, n, n);
+  // prnVetor(vet, n);
+  
+  printf("\n===========================Resultado sem Unroll e Jam + Blocking============================\n");
+  memset(res, 0, n * sizeof(real_t));
+  memset(resMat, 0, n * n * sizeof(real_t));
 
+  time_t inicio = timestamp();
   multMatVet(mRow_1, vet, n, n, res);
+  printf("tempo da multiplicação mat x vet: %1.8e\n", timestamp() - inicio);
 
+  inicio = timestamp();
   multMatMat(mRow_1, mRow_2, n, resMat);
+  printf("tempo da multiplicação mat x mat: %1.8e\n", timestamp() - inicio);
+
 
 #ifdef _DEBUG_
   prnVetor(res, n);
   prnMat(resMat, n, n);
 #endif /* _DEBUG_ */
 
-  printf("\n===========================Resultado sem Unroll e Jam + Blocking============================\n");
-  prnVetor(res, n);
-  prnMat(resMat, n, n);
+  // prnVetor(res, n);
+  // prnMat(resMat, n, n);
 
   memset(res, 0, n * sizeof(real_t));
   memset(resMat, 0, n * n * sizeof(real_t));
-
-  multMatVetUnrollJamBlocking(mRow_1, vet, n, n, res);
-  multMatMatUnrollJamBlocking(mRow_1, mRow_2, n, resMat);
-
   printf("\n===========================Resultado com Unroll e Jam + Blocking============================\n");
-  prnVetor(res, n);
-  prnMat(resMat, n, n);
+
+  inicio = timestamp();
+  multMatVetUnrollJamBlocking(mRow_1, vet, n, n, res);
+  printf("tempo da multiplicação mat x vet: %1.8e\n", timestamp() - inicio);
+
+  inicio = timestamp();
+  multMatMatUnrollJamBlocking(mRow_1, mRow_2, n, resMat);
+  printf("tempo da multiplicação mat x mat: %1.8e\n", timestamp() - inicio);
+
+  // prnVetor(res, n);
+  // prnMat(resMat, n, n);
 
   liberaVetor((void *)mRow_1);
   liberaVetor((void *)mRow_2);

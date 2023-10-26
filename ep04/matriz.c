@@ -185,18 +185,21 @@ void multMatMatUnrollJamBlocking(MatRow A, MatRow B, int n, MatRow C){
         kend = kstart + BK;
         for (int i = istart; i < iend; ++i)
           for (int j = jstart; j < jend; j += UF) {
-            C[i * n + j] = 0;
-            C[i * n + (j+1)] = 0;
-            C[i * n + (j+2)] = 0;
-            C[i * n + (j+3)] = 0;
+            // isso estava zerando os valores que não deveriam ser zerados
+            // C[i * n + j] = 0;
+            // C[i * n + (j+1)] = 0;
+            // C[i * n + (j+2)] = 0;
+            // C[i * n + (j+3)] = 0;
             for (int k = kstart; k < kend; ++k) {
-            // C[i][j] = C[i * n + j]
-            // A[i][k] = A[i * n + k]
-            // B[k][j] = B[k * n + j]
               C[i * n + j] += A[i * n + k] * B[k * n + j];
               C[i * n + (j+1)] += A[i * n + k] * B[k * n + (j+1)];
               C[i * n + (j+2)] += A[i * n + k] * B[k * n + (j+2)];
               C[i * n + (j+3)] += A[i * n + k] * B[k * n + (j+3)];
+              // printf("A[%d][%d] (%lf) * B[%d][%d] (%lf) = C[%d][%d] (%lf)\n", i, k, A[i * n + k], k, j, B[k * n + j], i, j, C[i * n + j]);
+              // printf("A[%d][%d] (%lf) * B[%d][%d] (%lf) = C[%d][%d] (%lf)\n", i, k, A[i * n + k], k, j+1, B[k * n + (j+1)], i, j+1, C[i * n + (j+1)]);
+              // printf("A[%d][%d] (%lf) * B[%d][%d] (%lf) = C[%d][%d] (%lf)\n", i, k, A[i * n + k], k, j+2, B[k * n + (j+2)], i, j+2, C[i * n + (j+2)]);
+              // printf("A[%d][%d] (%lf) * B[%d][%d] (%lf) = C[%d][%d] (%lf)\n", i, k, A[i * n + k], k, j+3, B[k * n + (j+3)], i, j+3, C[i * n + (j+3)]);
+
             }
           }
       }
