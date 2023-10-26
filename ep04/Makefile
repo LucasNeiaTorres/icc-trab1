@@ -1,42 +1,28 @@
 # PROGRAMA
-        PROG = matmult
-        OBJS = $(PROG).o matriz.o utils.o
+    PROG = matmult
 
 # Compilador
-           CC = gcc -Wall
-
-       CFLAGS =  
-       LFLAGS = -lm
+    CC     = gcc
+    CFLAGS = -O3 -mavx -march=native 
+    LFLAGS = -lm -I/home/soft/likwid/include -L/home/soft/likwid/lib -DLIKWID_PERFMON -llikwid
 
 # Lista de arquivos para distribuição
-DISTFILES = *.c *.h README.md Makefile perfctr
+DISTFILES = *.c *.h # LEIAME* Makefile
 DISTDIR = `basename ${PWD}`
 
-.PHONY: all debug clean purge dist
+.PHONY: all clean purge dist
 
-%.o: %.c %.h
-	$(CC) $(CFLAGS) -c $<
-
-all: $(PROG)
-
-debug:         CFLAGS += -g -D_DEBUG_
-debug:         $(PROG)
-
-$(PROG): $(OBJS) 
-	$(CC) $(CFLAGS) -o $@ $^ $(LFLAGS)
-
+$(PROG): $(DISTFILES)
+	@$(CC) $(CFLAGS) -o $(PROG) $(DISTFILES) $(LFLAGS)
+	
 clean:
-	@echo "Limpando ...."
-	@rm -f *~ *.bak *.tmp core 
+	@rm -f *~ *.bak
 
-purge:   clean
-	@echo "Faxina ...."
-	@rm -f  $(PROG) *.o a.out $(DISTDIR) $(DISTDIR).tar
-	@rm -f *.png marker.out
+purge:  clean
+	@rm -f $(PROG) *.o core a.out $(DISTDIR) $(DISTDIR).tar
 
 dist: purge
 	@echo "Gerando arquivo de distribuição ($(DISTDIR).tar) ..."
 	@ln -s . $(DISTDIR)
 	@tar -cvf $(DISTDIR).tar $(addprefix ./$(DISTDIR)/, $(DISTFILES))
 	@rm -f $(DISTDIR)
-

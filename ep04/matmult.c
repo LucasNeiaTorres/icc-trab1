@@ -6,6 +6,7 @@
 
 #include "matriz.h"
 #include "utils.h"
+#include "likwid.h"
 
 /**
  * Exibe mensagem de erro indicando forma de uso do programa e termina
@@ -77,9 +78,13 @@ int main(int argc, char *argv[])
   memset(res, 0, n * sizeof(real_t));
   memset(resMat, 0, n * n * sizeof(real_t));
 
+  LIKWID_MARKER_INIT;
+
+  LIKWID_MARKER_START("MultMatVetSem");
   time_t inicio = timestamp();
   multMatVet(mRow_1, vet, n, n, res);
   printf("tempo da multiplicação mat x vet: %1.8e\n", timestamp() - inicio);
+  LIKWID_MARKER_STOP("MultMatVetSem");
 
   inicio = timestamp();
   multMatMat(mRow_1, mRow_2, n, resMat);
@@ -108,7 +113,7 @@ int main(int argc, char *argv[])
 
   // prnVetor(res, n);
   // prnMat(resMat, n, n);
-
+  LIKWID_MARKER_CLOSE;
   liberaVetor((void *)mRow_1);
   liberaVetor((void *)mRow_2);
   liberaVetor((void *)resMat);
