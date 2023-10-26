@@ -121,7 +121,7 @@ void multMatVet(MatRow mat, Vetor v, int m, int n, Vetor res)
  
 void multMatVetUnrollJamBlocking(MatRow mat, Vetor v, int m, int n, Vetor res)
 {
-  if (res)
+  if (!res)
     return;
 
   int istart = 0;
@@ -129,7 +129,7 @@ void multMatVetUnrollJamBlocking(MatRow mat, Vetor v, int m, int n, Vetor res)
   int jstart = 0;
   int jend = 0;
 
-  for (int ii = 0; ii < m/BK; ++ii){
+  for (int ii = 0; ii < m/BK; ++ii) {
     istart = ii * BK;
     iend = istart + BK;
     for (int jj = 0; jj < n/BK; ++jj) {
@@ -173,6 +173,7 @@ void multMatMatUnrollJamBlocking(MatRow A, MatRow B, int n, MatRow C){
   int kstart = 0;
   int kend = 0;
   
+  // memset(C, 0, n * n * sizeof(real_t));
   for (int ii = 0; ii < n/BK; ++ii) {
     istart = ii * BK; 
     iend = istart + BK;
@@ -184,7 +185,10 @@ void multMatMatUnrollJamBlocking(MatRow A, MatRow B, int n, MatRow C){
         kend = kstart + BK;
         for (int i = istart; i < iend; ++i)
           for (int j = jstart; j < jend; j += UF) {
-            memset(C, 0, n * n * sizeof(real_t));
+            C[i * n + j] = 0;
+            C[i * n + (j+1)] = 0;
+            C[i * n + (j+2)] = 0;
+            C[i * n + (j+3)] = 0;
             for (int k = kstart; k < kend; ++k) {
             // C[i][j] = C[i * n + j]
             // A[i][k] = A[i * n + k]
