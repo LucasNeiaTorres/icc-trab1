@@ -19,6 +19,20 @@ do
      fi
 done
 
+if [ -e tempoExecucao.dat ];then
+	rm tempoExecucao.dat
+fi
+
+for valor in "${ARRAY[@]}"
+do
+	./matmult $valor > aux.txt
+        tSemOtimMxV=$(cat aux.txt | grep "tSemOtimMxV" | cut -d ":" -f 2)
+	tSemOtimMxM=$(cat aux.txt | grep "tSemOtimMxM" | cut -d ":" -f 2)
+	tComOtimMxV=$(cat aux.txt | grep "tComOtimMxV" | cut -d ":" -f 2)
+	tComOtimMxM=$(cat aux.txt | grep "tComOtimMxM" | cut -d ":" -f 2)
+        echo "${valor},${tSemOtimMxV},${tSemOtimMxM},${tComOtimMxV},${tComOtimMxM}" >> tempoExecucao.dat
+done
+
 #Para cada metrica
 for k in $METRICA
 do
