@@ -73,8 +73,7 @@ int main(int argc, char *argv[])
   // prnMat(mRow_1, n, n);
   // prnMat(mRow_2, n, n);
   // prnVetor(vet, n);
-  
-  printf("\n===========================Resultado sem Unroll e Jam + Blocking============================\n");
+
   memset(res, 0, n * sizeof(real_t));
   memset(resMat, 0, n * n * sizeof(real_t));
 
@@ -83,13 +82,14 @@ int main(int argc, char *argv[])
   LIKWID_MARKER_START("MultMatVetSem");
   time_t inicio = timestamp();
   multMatVet(mRow_1, vet, n, n, res);
-  printf("tempo da multiplicação mat x vet: %1.8e\n", timestamp() - inicio);
+  printf("tSemOtimMxV:%lf\n", timestamp() - inicio);
   LIKWID_MARKER_STOP("MultMatVetSem");
 
+  LIKWID_MARKER_START("MultMatMatSem");
   inicio = timestamp();
   multMatMat(mRow_1, mRow_2, n, resMat);
-  printf("tempo da multiplicação mat x mat: %1.8e\n", timestamp() - inicio);
-
+  printf("tSemOtimMxM:%lf\n", timestamp() - inicio);
+  LIKWID_MARKER_STOP("MultMatMatSem");
 
 #ifdef _DEBUG_
   prnVetor(res, n);
@@ -101,15 +101,18 @@ int main(int argc, char *argv[])
 
   memset(res, 0, n * sizeof(real_t));
   memset(resMat, 0, n * n * sizeof(real_t));
-  printf("\n===========================Resultado com Unroll e Jam + Blocking============================\n");
 
+  LIKWID_MARKER_START("MultMatVetCom");
   inicio = timestamp();
   multMatVetUnrollJamBlocking(mRow_1, vet, n, n, res);
-  printf("tempo da multiplicação mat x vet: %1.8e\n", timestamp() - inicio);
+  printf("tComOtimMxV:%lf\n", timestamp() - inicio);
+  LIKWID_MARKER_STOP("MultMatVetCom");
 
+  LIKWID_MARKER_START("MultMatMatCom");
   inicio = timestamp();
   multMatMatUnrollJamBlocking(mRow_1, mRow_2, n, resMat);
-  printf("tempo da multiplicação mat x mat: %1.8e\n", timestamp() - inicio);
+  printf("tComOtimMxM:%lf\n", timestamp() - inicio);
+  LIKWID_MARKER_STOP("MultMatMatCom");
 
   // prnVetor(res, n);
   // prnMat(resMat, n, n);
