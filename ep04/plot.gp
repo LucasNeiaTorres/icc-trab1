@@ -13,20 +13,29 @@ set style line 1 lc 3 pt 7 ps 0.3
 set boxwidth 1
 set xtics
 # set xrange [0:]
-set xlabel  "N (bytes)"
+set xlabel  "N (tamanho matriz)"
 
 #
-# ALTERNATIVA 1: Tabelas em arquivos separados (2 colunas)
+# ALTERNATIVA 2: Tabela com 3 colunas 
 #
-set key center center # posição da legenda: center, left, right
-set datafile separator comma
-set ylabel  "<metrica 1>"
-set logscale x
-set title   "<campo[marcador 1]>"
-set terminal qt 0 title "<campo[marcador 1]>"
-plot 'FLOPS_DP.dat' using 1:2 title "<sem otimização>" lc rgb "green" with linespoints, \
-     '' using 1:3 "<com otimização>" lc rgb "blue" with linespoints, \
+set key outside right # posição da legenda: outside {left | right}
+unset logscale x
+set datafile separator whitespace
+set ylabel  "energy (J)"
+set title   "Energia função multMatVet"
+set terminal qt 1 title "Energia função multMatVet"
+plot 'L3.dat' using 1:2 title "<com otimização>" with linespoints, \
+     '' using 1:3 title "<sem otimização>" with linespoints, \
+     '' using 1:4 title "<sem otimização>" with linespoints, \
+     '' using 1:5 title "<sem otimização>" with linespoints
 
 pause -1
 
 
+# Gerando figura PNG
+set terminal png
+set output "energy_MatVet.png"
+plot 'L3.dat' using 1:2 title "<sem otimização>" with linespoints, \
+     '' using 1:3 title "<com otimização>" with linespoints
+replot
+unset output
