@@ -1,83 +1,47 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
+
 #include "utils.h"
 
+#define NRAND    ((double)rand() / RAND_MAX)
 #define SRAND(a) srand(a)
 
-// double styblinskiTang(double a, double b, int namostras) {
-//     double resultado;
-//     double soma = 0.0;
-
-//     printf("Método de Monte Carlo (x, y).\n");
-//     printf("a = (%f), b = (%f), n = (%d), variáveis = 2\n", a, b, namostras);
-
-//     double t_inicial = timestamp();
-
-//     SRAND(20232); // Semente 20232
-
-//     for (int i = 0; i < namostras; i++) {
-//         double x = a + (b - a) * UNIFORM_RAND;
-//         double y = a + (b - a) * UNIFORM_RAND;
-//         soma += pow(x, 4) - 16 * pow(x, 2) + 5 * pow(x, 2);
-//     }
-
-//     resultado = soma / namostras * pow(b - a, 2);
-
-//     double t_final = timestamp();
-//     printf("Tempo decorrido: %f seg.\n", t_final - t_inicial);
-
-//     return resultado;
-// }
-
-double styblinskiTang(double a, double b, int namostras, int n_variaveis) {
-    double resultado;
-    double soma = 0.0;
-
-    printf("Método de Monte Carlo (%d variáveis).\n", n_variaveis);
-    printf("a = (%f), b = (%f), n = (%d), variáveis = %d\n", a, b, namostras, n_variaveis);
-
-    double t_inicial = timestamp();
-
-    SRAND(20232);
-
-    for (int i = 0; i < namostras; i++) {
-        double x_sum = 0.0;
-        for (int j = 0; j < n_variaveis; j++) {
-            double valor_randomico = a + (b - a) * rand();
-            x_sum += pow(valor_randomico, 4) - 16 * pow(valor_randomico, 2) + 5 * valor_randomico;
-        }
-        x_sum /= 2;
-        soma += x_sum;
+// Função Styblinski-Tang de n variáveis
+double styblinskiTang(double x[], int n)
+{
+    double sum = 0.0;
+    for (int i = 0; i < n; i++) {
+        sum += (pow(x[i], 4) - 16 * pow(x[i], 2) + 5 * x[i]) / 2.0;
     }
-
-    resultado = soma / namostras;
-
-    double t_final = timestamp();
-    printf("Tempo decorrido: %f seg.\n", t_final - t_inicial);
-
-    return resultado;
+    return sum;
 }
 
-double retangulos_xy(double a, double b, int npontos) {
+
+// Função para calcular a integral pelo Método dos Retângulos (n dimensões)
+double retangulos_nD(double a, double b, int npontos, int n)
+{
     double h = (b - a) / npontos;
     double resultado;
-    double soma = 0.0;
+    double soma = 0;
 
-    printf("Método dos Retângulos (x, y).\n");
+    printf("Método dos Retângulos (%d dimensões).\n", n);
     printf("a = (%f), b = (%f), n = (%d), h = (%lg)\n", a, b, npontos, h);
 
     double t_inicial = timestamp();
 
-    for (int i = 0; i < npontos; i++) {
-        for (int j = 0; j < npontos; j++) {
-            double x = a + (i + 0.5) * h;
-            double y = a + (j + 0.5) * h;
-            soma += pow(x, 4) - 16 * pow(x, 2) + 5 * pow(x, 2);
+    // Cálculo da integral pelo Método dos Retângulos
+    for (int i = 0; i < npontos; i++)
+    {
+        double x[n];
+        for (int j = 0; j < n; j++) {
+            x[j] = a + i * h;
         }
+        soma += h * styblinskiTang(x, n);
     }
 
-    resultado = pow(h, 2) * soma;
+    resultado = soma;
 
     double t_final = timestamp();
     printf("Tempo decorrido: %f seg.\n", t_final - t_inicial);
@@ -85,29 +49,59 @@ double retangulos_xy(double a, double b, int npontos) {
     return resultado;
 }
 
-int main(int argc, char **argv) {
+// Função para calcular a integral pelo Método de Monte Carlo (n dimensões)
+double monteCarlo_nD(double a, double b, int namostras, int n)
+{
+    double resultado;
+    double soma = 0.0;
 
+    printf("Método de Monte Carlo (%d dimensões).\n", n);
+    printf("a = (%f), b = (%f), n = (%d), variáveis = %d\n", a, b, namostras, n);
+
+    double t_inicial = timestamp();
+
+    // Cálculo da integral pelo Método de Monte Carlo
+    for (int i = 0; i < namostras; i++)
+    {
+        double x[n];
+        for (int j = 0; j < n; j++) {
+            x[j] = a + NRAND * (b - a);
+        }
+        soma += styblinskiTang(x, n);
+    }
+
+    resultado = (soma / namostras) * (b - a);
+
+    double t_final = timestamp();
+    printf("Tempo decorrido: %f seg.\n", t_final - t_inicial);
+
+    return resultado;
+}
+
+
+
+int main(int argc, char **argv)
+{
     if (argc < 4) {
-        printf("Utilização: %s inicial final n_variaveis\n", argv[0]);
+        printf("Utilização: %s n a b\n", argv[0]);
         return 1;
     }
 
-    int n_variaveis = atoi(argv[1]);
+    int n = atoi(argv[1]);
     double a = atof(argv[2]);
     double b = atof(argv[3]);
-    int n_amostras = pow(10, 2);
+    int npontos = 10000000;  // 10^7 pontos para o Método dos Retângulos
+    int namostras = 10000000;  // 10^7 amostras para o Método de Monte Carlo
 
-    if (n_variaveis == 2) {
-        double resultado_monte_carlo = styblinskiTang(a, b, n_amostras, n_variaveis);
-        printf("Resultado (Monte Carlo): %f\n", resultado_monte_carlo);
+    SRAND(time(NULL));
 
-    } else if(n_variaveis == 4) {
-        // double resultado_monte_carlo = styblinskiTang4(a, b, n_amostras); FAZER COM 4 
-    } else if(n_variaveis == 8) {
-        // double resultado_monte_carlo = styblinskiTang8(a, b, n_amostras); FAZER COM 8
-    }
+    // Chamada da função dos Retângulos
+    double resultRetangulos = retangulos_nD(a, b, npontos, n);
+    printf("Resultado do Método dos Retângulos: %f\n", resultRetangulos);
 
-    double resultado_retangulos = retangulos_xy(a, b, n_amostras);
-    printf("Resultado (Retângulos): %f\n", resultado_retangulos);
+    // Chamada da função de Monte Carlo
+    double resultMonteCarlo = monteCarlo_nD(a, b, namostras, n);
+    printf("Resultado do Método de Monte Carlo: %f\n", resultMonteCarlo);
+
     return 0;
 }
