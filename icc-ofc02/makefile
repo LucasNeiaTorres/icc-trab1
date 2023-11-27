@@ -1,1 +1,0 @@
-faz ai filhote
