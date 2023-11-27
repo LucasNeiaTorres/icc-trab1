@@ -51,24 +51,26 @@ int main()
     }
 
     LIKWID_MARKER_INIT;
-    LIKWID_MARKER_START("EliminacaoGaussIntervalar");
+    LIKWID_MARKER_START("TGERA");
 
     startTime = timestamp();
     intervalo_t **matrizIntervalo = sistemaLinearIntervalar(xintervalo, qntPontos, grauPolinomio);
     intervalo_t *vetorIntervalo = vetorResultadoIntervalar(xintervalo, fxintervalo, qntPontos, grauPolinomio);
     geraTime = timestamp() - startTime;
+
+    LIKWID_MARKER_STOP("TGERA");
+    LIKWID_MARKER_CLOSE;
+
+    
     startTime = timestamp();
     intervalo_t *coeficientes = eliminacaoGaussIntervalar(matrizIntervalo, vetorIntervalo, grauPolinomio);
     intervalo_t *residuo = calculaResiduoIntervalar(xintervalo, fxintervalo, coeficientes, grauPolinomio, qntPontos);
     solTime = timestamp() - startTime;
 
-    LIKWID_MARKER_STOP("EliminacaoGaussIntervalar");
-    LIKWID_MARKER_CLOSE;
-
     imprimeVetorIntervalar(coeficientes, grauPolinomio);
     imprimeVetorIntervalar(residuo, qntPontos);
-    printf("solTime: %1.8e\n", solTime);
     printf("geraTime: %1.8e\n", geraTime);
+    printf("solTime: %1.8e\n", solTime);
 
     desalocaVetorIntervalar(xintervalo);
     desalocaVetorIntervalar(fxintervalo);
