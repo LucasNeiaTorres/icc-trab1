@@ -26,9 +26,6 @@ intervalo_t *sistemaLinearIntervalar(intervalo_t *xintervalo, int qntPontos, int
     intervalo_t segundoValor;
     intervalo_t multIntervalar;
     intervalo_t *mmIntervalo = alocaVetorIntervalar(grauPolinomio * grauPolinomio);
-    intervalo_t powX;
-    powX.maior = 0;
-    powX.menor = 0;
 
     // Mover o laço que itera os pontos para o mais externo, a fim de reduzir miss caching
     for (ponto = 0; ponto < qntPontos; ponto++)

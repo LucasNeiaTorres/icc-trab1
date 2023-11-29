@@ -21,6 +21,7 @@ intervalo_t *calculaResiduoIntervalar(intervalo_t *xintervalo, intervalo_t *fxin
     intervalo_t *residuo = (intervalo_t *)calloc(qntPontos, sizeof(intervalo_t));
     int i, j;
     int UF = 4;
+    //Aplicado loop unroll para melhorar a performance, forma antiga já estava iterando pela quantidade de pontos como laço mais externo
     for (i = 0; i < qntPontos; i+=UF)
     {
         // Calcula o resíduo para o ponto i

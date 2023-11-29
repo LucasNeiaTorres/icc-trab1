@@ -13,10 +13,8 @@
 intervalo_t calculaIntervalo(double originalValue)
 {
     intervalo_t intervalo;
-    fesetround(FE_UPWARD);
     intervalo.maior = nextafter(originalValue, INFINITY);
 
-    fesetround(FE_DOWNWARD);
     intervalo.menor = nextafter(originalValue, -INFINITY);
 
     return intervalo;
@@ -26,9 +24,7 @@ intervalo_t calculaIntervalo(double originalValue)
 intervalo_t soma(intervalo_t primeiro_valor, intervalo_t segundo_valor)
 {
     intervalo_t resultado;
-    fesetround(FE_UPWARD);
     resultado.maior = primeiro_valor.maior + segundo_valor.maior;
-    fesetround(FE_DOWNWARD);
     resultado.menor = primeiro_valor.menor + segundo_valor.menor;
     return resultado;
 }
@@ -37,9 +33,7 @@ intervalo_t soma(intervalo_t primeiro_valor, intervalo_t segundo_valor)
 intervalo_t subtracao(intervalo_t primeiro_valor, intervalo_t segundo_valor)
 {
     intervalo_t resultado;
-    fesetround(FE_UPWARD);
     resultado.maior = primeiro_valor.maior - segundo_valor.menor;
-    fesetround(FE_DOWNWARD);
     resultado.menor = primeiro_valor.menor - segundo_valor.maior;
     return resultado;
 }
@@ -48,9 +42,7 @@ intervalo_t subtracao(intervalo_t primeiro_valor, intervalo_t segundo_valor)
 intervalo_t multiplica(double menor, double maior)
 {
     intervalo_t resultado;
-    fesetround(FE_DOWNWARD);
     resultado.menor = menor * maior;
-    fesetround(FE_UPWARD);
     resultado.maior = menor * maior;
     return resultado;
 }
@@ -64,7 +56,7 @@ void comparaValor(intervalo_t *resultado, intervalo_t aux)
         resultado->menor = aux.menor;
 }
 
-// calcula e retorna a multiplicacao de dois intervalos 
+// calcula e retorna a multiplicacao de dois intervalos
 intervalo_t multiplicacao(intervalo_t primeiro_valor, intervalo_t segundo_valor)
 {
     intervalo_t resultado;
@@ -80,7 +72,7 @@ intervalo_t multiplicacao(intervalo_t primeiro_valor, intervalo_t segundo_valor)
     return resultado;
 }
 
-// calcula e retorna a divisao de dois intervalos 
+// calcula e retorna a divisao de dois intervalos
 intervalo_t divisao(intervalo_t primeiro_valor, intervalo_t segundo_valor)
 {
     intervalo_t erro0 = calculaIntervalo(0);
@@ -92,9 +84,7 @@ intervalo_t divisao(intervalo_t primeiro_valor, intervalo_t segundo_valor)
     else
     {
         intervalo_t valor_auxiliar;
-        fesetround(FE_DOWNWARD);
         valor_auxiliar.menor = 1 / segundo_valor.maior;
-        fesetround(FE_UPWARD);
         valor_auxiliar.maior = 1 / segundo_valor.menor;
         primeiro_valor = multiplicacao(primeiro_valor, valor_auxiliar);
     }
@@ -112,25 +102,19 @@ intervalo_t potenciacao(intervalo_t valor, int expoente)
     }
     else if ((expoente % 2) != 0)
     {
-        fesetround(FE_DOWNWARD);
         resultado.menor = pow(valor.menor, expoente);
-        fesetround(FE_UPWARD);
         resultado.maior = pow(valor.maior, expoente);
     }
     else
     {
         if (valor.menor >= 0)
         {
-            fesetround(FE_DOWNWARD);
             resultado.menor = pow(valor.menor, expoente);
-            fesetround(FE_UPWARD);
             resultado.maior = pow(valor.maior, expoente);
         }
         else if (valor.maior < 0)
         {
-            fesetround(FE_DOWNWARD);
             resultado.menor = pow(valor.maior, expoente);
-            fesetround(FE_UPWARD);
             resultado.maior = pow(valor.menor, expoente);
         }
         else
@@ -138,12 +122,10 @@ intervalo_t potenciacao(intervalo_t valor, int expoente)
             resultado.menor = 0;
             if (pow(valor.menor, expoente) > pow(valor.maior, expoente))
             {
-                fesetround(FE_UPWARD);
                 resultado.maior = pow(valor.menor, expoente);
             }
             else
             {
-                fesetround(FE_UPWARD);
                 resultado.maior = pow(valor.maior, expoente);
             }
         }

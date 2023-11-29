@@ -1,7 +1,7 @@
 #!/bin/bash                                                                                                                                                                                                                                   
 
 ARQUIVO_ENTRADA="$1"
-METRICA="FLOPS_DP ENERGY"
+METRICA="FLOPS_DP L3 L2CACHE ENERGY"
 CPU=3
 
 LIKWID_HOME=/home/soft/likwid
@@ -23,6 +23,7 @@ do
     likwid-perfctr -C ${CPU} -g ${k} -m ./ajustePol < ${ARQUIVO_ENTRADA} >> aux.txt
 done
 
-cat aux.txt | sed -n '6,9p'
-cat aux.txt | grep '  DP MFLOP/s\| AVX DP MFLOP/s\| Energy \[J\]'
+# cat aux.txt
+# cat aux.txt | sed -n '6,9p'
+cat aux.txt | grep -E '  DP MFLOP/s\ | AVX DP MFLOP/s\ | L3 bandwidth \[MBytes/s\] | L2 miss ratio | Energy \[J\]|geraTime|solTime'
 rm aux.txt
