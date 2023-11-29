@@ -99,7 +99,6 @@ intervalo_t *vetorResultadoIntervalar(intervalo_t *xintervalo, intervalo_t *fxin
             primeiroValor = potenciacao(xintervalo[ponto+3], i);
             multIntervalar = multiplicacao(primeiroValor, fxintervalo[ponto+3]);
             vetorResultado[i] = soma(vetorResultado[i], multIntervalar);
-            // testar com 8
         }
     }
     // imprimeVetorIntervalar(vetorResultado, grauPolinomio);
