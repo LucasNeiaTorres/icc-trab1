@@ -16,8 +16,8 @@ echo "performance" > /sys/devices/system/cpu/cpufreq/policy3/scaling_governor
 make purge
 make
 
-# Compila ajustePol antigo
-cd antigo
+# Compila ajustePol semOtimizacao
+cd semOtimizacao
 make purge
 make
 cd ..
@@ -87,7 +87,7 @@ do
 	echo "TEMPO"
 	echo "Valor-> $valor"
     ./gera_entrada $valor | ./ajustePol > aux.txt
-	./gera_entrada $valor | ./antigo/ajustePol > aux2.txt
+	./gera_entrada $valor | ./semOtimizacao/ajustePol > aux2.txt
 	tGeraAtual=$(cat aux.txt | grep -E 'geraTime' | cut -d ":" -f 2)
 	tGeraAntigo=$(cat aux2.txt | grep -E 'geraTime' | cut -d ":" -f 2)
 	tResolveAtual=$(cat aux.txt | grep -E 'resolveTime' | cut -d ":" -f 2)
@@ -110,7 +110,7 @@ do
 	do
 		echo "Valor-> $valor"
 		./gera_entrada $valor | likwid-perfctr -C ${CPU} -g ${k} -m ./ajustePol > aux.txt
-		./gera_entrada $valor | likwid-perfctr -C ${CPU} -g ${k} -m ./antigo/ajustePol > aux2.txt
+		./gera_entrada $valor | likwid-perfctr -C ${CPU} -g ${k} -m ./semOtimizacao/ajustePol > aux2.txt
 
 		LINHA1="${valor}"
 
