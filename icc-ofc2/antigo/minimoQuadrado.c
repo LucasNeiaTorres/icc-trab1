@@ -54,7 +54,6 @@ intervalo_t **sistemaLinearIntervalar(intervalo_t *xintervalo, int qntPontos, in
 intervalo_t *vetorResultadoIntervalar(intervalo_t *xintervalo, intervalo_t *fxintervalo, int qntPontos, int grauPolinomio)
 {
     int i = 0;
-    int j = 0;
     int ponto;
     intervalo_t *vetorResultado = alocaVetorIntervalar(grauPolinomio);
     intervalo_t firstValue;

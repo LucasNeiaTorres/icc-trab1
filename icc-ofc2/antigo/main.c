@@ -22,7 +22,8 @@ int main()
     double entrada;
     rtime_t startTime;
     rtime_t geraTime;
-    rtime_t solTime;
+    rtime_t resolveTime;
+    rtime_t residuoTime;
 
     if (scanf("%d", &grauPolinomio) != 1)
     {
@@ -51,26 +52,36 @@ int main()
     }
 
     LIKWID_MARKER_INIT;
-    LIKWID_MARKER_START("TGERA");
-
+    LIKWID_MARKER_START("GeraSL");
     startTime = timestamp();
     intervalo_t **matrizIntervalo = sistemaLinearIntervalar(xintervalo, qntPontos, grauPolinomio);
     intervalo_t *vetorIntervalo = vetorResultadoIntervalar(xintervalo, fxintervalo, qntPontos, grauPolinomio);
     geraTime = timestamp() - startTime;
-
-    LIKWID_MARKER_STOP("TGERA");
+    LIKWID_MARKER_STOP("GeraSL");
     LIKWID_MARKER_CLOSE;
 
-    
+    LIKWID_MARKER_INIT;
+    LIKWID_MARKER_START("ResolveSL");
     startTime = timestamp();
     intervalo_t *coeficientes = eliminacaoGaussIntervalar(matrizIntervalo, vetorIntervalo, grauPolinomio);
+    resolveTime = timestamp() - startTime;
+    LIKWID_MARKER_STOP("ResolveSL");
+    LIKWID_MARKER_CLOSE;
+
+    LIKWID_MARKER_INIT;
+    LIKWID_MARKER_START("CalculaResiduo");
+    startTime = timestamp();
     intervalo_t *residuo = calculaResiduoIntervalar(xintervalo, fxintervalo, coeficientes, grauPolinomio, qntPontos);
-    solTime = timestamp() - startTime;
+    residuoTime = timestamp() - startTime;
+    LIKWID_MARKER_STOP("CalculaResiduo");
+    LIKWID_MARKER_CLOSE;
 
     imprimeVetorIntervalar(coeficientes, grauPolinomio);
     imprimeVetorIntervalar(residuo, qntPontos);
-    printf("geraTime: %1.8e\n", geraTime);
-    printf("solTime: %1.8e\n", solTime);
+
+    printf("geraTime: %1.8f\n", geraTime);
+    printf("resolveTime:%1.8f\n", resolveTime);
+    printf("residuoTime:%1.8f\n", residuoTime);
 
     desalocaVetorIntervalar(xintervalo);
     desalocaVetorIntervalar(fxintervalo);

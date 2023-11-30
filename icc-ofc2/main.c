@@ -15,8 +15,6 @@
 int main()
 {
     int qntPontos, i;
-    double pl;
-    double pn;
     int grauPolinomio;
     char aux;
     double entrada;
@@ -78,17 +76,13 @@ int main()
 
     // imprimeVetorIntervalar(coeficientes, grauPolinomio);
     // imprimeVetorIntervalar(residuo, qntPontos);
-    printf("geraTime: %1.8e\n", geraTime);
-    printf("resolveTime:%1.8e\n", resolveTime);
-    printf("residuoTime:%1.8e\n", residuoTime);
+    printf("geraTime: %1.8f\n", geraTime);
+    printf("resolveTime:%1.8f\n", resolveTime);
+    printf("residuoTime:%1.8f\n", residuoTime);
     
-    // desalocaVetorIntervalar(xintervalo);
-    // desalocaVetorIntervalar(fxintervalo);
-    // desalocaVetorIntervalar(mmIntervalo);
-    // desalocaVetorIntervalar(vetorIntervalo);
-
-    // desalocaVetorIntervalar(vetorIntervalo);
-    // desalocaVetorIntervalar(coeficientes);
-    // desalocaVetorIntervalar(residuo);
-    // desalocaMatrizIntervalar(matrizIntervalo, grauPolinomio);
+    desalocaVetorIntervalar(xintervalo);
+    desalocaVetorIntervalar(fxintervalo);
+    desalocaVetorIntervalar(mmIntervalo);
+    desalocaVetorIntervalar(vetorIntervalo);
+    desalocaVetorIntervalar(residuo);
 }
