@@ -76,8 +76,8 @@ int main()
     LIKWID_MARKER_STOP("CalculaResiduo");
     LIKWID_MARKER_CLOSE;
 
-    imprimeVetorIntervalar(coeficientes, grauPolinomio);
-    imprimeVetorIntervalar(residuo, qntPontos);
+    // imprimeVetorIntervalar(coeficientes, grauPolinomio);
+    // imprimeVetorIntervalar(residuo, qntPontos);
 
     printf("geraTime: %1.8f\n", geraTime);
     printf("resolveTime:%1.8f\n", resolveTime);

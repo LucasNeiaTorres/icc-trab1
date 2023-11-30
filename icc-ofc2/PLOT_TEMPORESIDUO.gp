@@ -25,10 +25,10 @@ set logscale x 10
 set logscale y 10
 set datafile separator whitespace
 set ylabel  "Tempo de execução (ms)"
-set title   "Gráfico de tempo (logxlog) para gerar o SL"
-set terminal qt 1 title "Gráfico de tempo (logxlog) para gerar o SL"
+set title   "Gráfico de tempo (logxlog) para calcular resíduo da Eliminação de Gauss"
+set terminal qt 1 title "Gráfico de tempo (logxlog) para calcular resíduo da Eliminação de Gauss"
 set datafile separator ","
-plot 'TEMPO_GERA.dat' using 1:2 title "<com otimização>" lc rgb "green" with linespoints, \
+plot 'TEMPO_RESIDUO.dat' using 1:2 title "<com otimização>" lc rgb "green" with linespoints, \
      '' using 1:3 title "<sem otimização>" lc rgb "blue" with linespoints
 
 
@@ -37,8 +37,8 @@ pause -1
 
 # Gerando figura PNG
 set terminal png
-set output "TEMPO_GERA.png"
-plot 'TEMPO_GERA.dat' using 1:2 title "<com otimização>" lc rgb "green" with linespoints, \
+set output "TEMPO_RESIDUO.png"
+plot 'TEMPO_RESIDUO.dat' using 1:2 title "<com otimização>" lc rgb "green" with linespoints, \
      '' using 1:3 title "<sem otimização>" lc rgb "blue" with linespoints
 replot
 unset output
